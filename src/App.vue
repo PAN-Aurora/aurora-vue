@@ -26,7 +26,6 @@ export default {
       this.$router.addRoutes(menus.addRoutes);
       this.$store.commit("updateMenulist", menus.menu);
       this.$store.dispatch("getBaseData");
-      console.log(menus)
       
       this.$store.commit("setOpenKeys", JSON.parse(sessionStorage.getItem("openKeys")));  // 刷新初始化菜单展开项
       if(sessionStorage.getItem("selectedKeys")){

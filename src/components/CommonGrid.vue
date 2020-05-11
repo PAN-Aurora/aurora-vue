@@ -1,185 +1,188 @@
 <template>
-    <a-row>
-        <a-divider v-if="gridOption.moduleTitle"  style="color: white">{{gridOption.moduleTitle}}</a-divider>
-        <slot name="operate">
-            <a-row class="mgBottom">
-                <a-col span="20" v-if="!(gridOption.showFilter === false)">
-                    <filterBar :filterColumns="gridOption.filterColumns"  @query="searchResult"></filterBar>
-                </a-col>
-                <a-col span="4">
-                    <a-row type="flex" justify="end">
-                        <a-button
-                                class="operateBtn"
-                                type="primary"
-                                icon="plus"
-                                :size="size"
-                                title="增加"
-                                @click="handleAdd"
-                                v-if="isRender('add')"
-                        />
-                        <a-button
-                                class="operateBtn warning"
-                                icon="delete"
-                                @click="batchDelete"
-                                :size="size"
-                                title="删除选中条目"
-                                v-if="isRender('deleteBatch')"
-                        />
-                        <slot name="extraOperate"></slot>
-                    </a-row>
-                </a-col>
-            </a-row>
-        </slot>
-        <a-table
-                :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"
-                @change="tableChange"
-                :dataSource="dataSource"
-                :columns="columns"
-                :pagination="ipagination"
-                :loading="loading"
-                :rowKey="(item, index) => { return index }"
-                class="specialCss"
-        >
-            <template slot="operation" slot-scope="text, record">
-                <a-button
-                        class="gridBtn info"
-                        title="编辑"
-                        type="default"
-                        @click="handleEdit(record)"
-                        icon="edit"
-                        size="small"
-                        v-if="isRender('edit')"
-                ></a-button>
-                <a-popconfirm v-if="isRender('delete')" title="确认删除?" @confirm="() => onDelete(record)">
-                    <a-button class="gridBtn danger" type="default" icon="close" size="small" title="删除"></a-button>
-                </a-popconfirm>
-                <a-button
-                        v-for="(operate,idx) in gridOption.extraOperation"
-                        :class="operate.classFormat ? operate.classFormat(record) : 'gridBtn'"
-                        @click="operate.click(record)"
-                        :title="operate.titleFormat?operate.titleFormat(record) || '':{}"
-                        size="small"
-                        :key="idx"
-                        :icon="operate.iconFormat(record) || 'plus'"
-                        :style="operate.styleFormat ? operate.styleFormat(record) : {}"
-                ></a-button>
-            </template>
-        </a-table>
-        <a-modal
-                :title="title"
-                v-model="visible"
-                :mask="false"
-                :centered="true"
-                :maskClosable="false"
-                :closable="false"
-                :width="gridOption.singleCol === true ?  550 : 1000"
-                @ok="ok"
-                okText="确认"
-                @cancel="cancel"
-                cancelText="取消"
-        >
-            <a-form
-                    :form="form"
-                    @submit="handleSubmit"
-                    id="form"
-                    :style="gridOption.singleCol === true ? {} : {'display': 'flex', 'flex-wrap': 'wrap'}"
+    <div>
+        <a-row>
+            <a-divider v-if="gridOption.moduleTitle"  style="color: white">{{gridOption.moduleTitle}}</a-divider>
+            <slot name="operate">
+                <a-row class="mgBottom">
+                    <a-col span="20" v-if="!(gridOption.showFilter === false)">
+                        <filterBar :filterColumns="gridOption.filterColumns"  @query="searchResult"></filterBar>
+                    </a-col>
+                    <a-col span="4">
+                        <a-row type="flex" justify="end">
+                            <a-button
+                                    class="operateBtn"
+                                    type="primary"
+                                    icon="plus"
+                                    :size="size"
+                                    title="增加"
+                                    @click="handleAdd"
+                                    v-if="isRender('add')"
+                            />
+                            <a-button
+                                    class="operateBtn warning"
+                                    icon="delete"
+                                    @click="batchDelete"
+                                    :size="size"
+                                    title="删除选中条目"
+                                    v-if="isRender('deleteBatch')"
+                            />
+                            <slot name="extraOperate"></slot>
+                        </a-row>
+                    </a-col>
+                </a-row>
+            </slot>
+            <a-table
+                    :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"
+                    @change="tableChange"
+                    :dataSource="dataSource"
+                    :columns="columns"
+                    :pagination="ipagination"
+                    :loading="loading"
+                    :rowKey="(item, index) => { return index }"
+                    class="specialCss"
             >
-                <a-form-item
-                        v-for="(item, idx) in formColumns"
-                        :style="gridOption.singleCol === true ? {} : {'width': '50%'}"
-                        :key="idx"
-                        :label="item.title"
-                        :label-col="{ span: 5 }"
-                        :wrapper-col="{ span: 16, offset: 1 }"
-                        layout="vertical"
+                <template slot="operation" slot-scope="text, record">
+                    <a-button
+                            class="gridBtn info"
+                            title="编辑"
+                            type="default"
+                            @click="handleEdit(record)"
+                            icon="edit"
+                            size="small"
+                            v-if="isRender('edit')"
+                    ></a-button>
+                    <a-popconfirm v-if="isRender('delete')" title="确认删除?" @confirm="() => onDelete(record)">
+                        <a-button class="gridBtn danger" type="default" icon="close" size="small" title="删除"></a-button>
+                    </a-popconfirm>
+                    <a-button
+                            v-for="(operate,idx) in gridOption.extraOperation"
+                            :class="operate.classFormat ? operate.classFormat(record) : 'gridBtn'"
+                            @click="operate.click(record)"
+                            :title="operate.titleFormat?operate.titleFormat(record) || '':{}"
+                            size="small"
+                            :key="idx"
+                            :icon="operate.iconFormat(record) || 'plus'"
+                            :style="operate.styleFormat ? operate.styleFormat(record) : {}"
+                    ></a-button>
+                </template>
+            </a-table>
+            <a-modal
+                    :title="title"
+                    v-model="visible"
+                    :mask="false"
+                    :centered="true"
+                    :maskClosable="false"
+                    :closable="false"
+                    :width="gridOption.singleCol === true ?  550 : 1000"
+                    @ok="ok"
+                    okText="确认"
+                    @cancel="cancel"
+                    cancelText="取消"
+            >
+                <a-form
+                        :form="form"
+                        @submit="handleSubmit"
+                        id="form"
+                        :style="gridOption.singleCol === true ? {} : {'display': 'flex', 'flex-wrap': 'wrap'}"
                 >
-                    <a-select
-                            v-decorator="item.decorator"
-                            v-if="item.type == 'select'"
-                            @change="item.change"
-                            @focus="bindEvent(item, 'focus')"
-                            allClear
-                            :mode="modeFormat(item)"
-                            :placeholder="item.placeholder || ''"
+                    <a-form-item
+                            v-for="(item, idx) in formColumns"
+                            :style="gridOption.singleCol === true ? {} : {'width': '50%'}"
+                            :key="idx"
+                            :label="item.title"
+                            :label-col="{ span: 5 }"
+                            :wrapper-col="{ span: 16, offset: 1 }"
+                            layout="vertical"
                     >
-                        <a-select-option
-                                v-for="option in item.options"
-                                :value="option.value"
-                                :key="option.value"
-                        >{{option.label}}</a-select-option>
-                    </a-select>
-                    <a-input
-                            v-decorator="item.decorator"
-                            :disabled="item.disabled === true ? true : false"
-                            v-if="item.type == 'input'"
-                            :placeholder="item.placeholder || ''"
-                    ></a-input>
-                    <a-radio-group
-                            v-decorator="item.decorator"
-                            @change="bindEvent(item, 'change')"
-                            v-if="item.type == 'radioGroup'"
-                            :options="item.options"
-                    ></a-radio-group>
-                    <a-switch
-                            v-decorator="item.decorator"
-                            v-if="item.type == 'switch'"
-                            checkedChildren="是"
-                            unCheckedChildren="否"
-                    ></a-switch>
-                    <a-date-picker
-                            v-decorator="item.decorator"
-                            v-if="item.type == 'datetimePicker'"
-                            format="YYYY-MM-DD HH:mm:ss"
-                            style="width: 100%"
-                            :showTime="{ defaultValue: moment('00:00:00', 'HH:mm:ss') }"
-                    ></a-date-picker>
-                    <a-date-picker
-                            v-decorator="item.decorator"
-                            v-if="item.type == 'datePicker'"
-                            format="YYYY-MM-DD"
-                            style="width: 100%"
-                    ></a-date-picker>
-                    <a-input-number
-                            v-decorator="item.decorator"
-                            v-if="item.type == 'number'"
-                            :placeholder="item.placeholder || ''"
-                            style="width: 100%"
-                            :min="item.min || 0 "
-                            :max="item.max || 999999999 "
-                            :precision="item.precision || 0"
-                    ></a-input-number>
-                    <a-textarea
-                            v-decorator="item.decorator"
-                            v-if="item.type == 'textarea'"
-                            :autosize="{ minRows: 4, maxRows: 4 }"
-                            :placeholder="item.placeholder || ''"
-                    ></a-textarea>
-                    <a-tree-select
-                            allowClear
-                            treeDefaultExpandAll
-                            @focus="bindEvent(item, 'focus')"
-                            :treeData="item.treeData"
-                            :placeholder="item.placeholder || ''"
-                            :treeCheckable="item.treeCheckable ? item.treeCheckable : false"
-                            v-decorator="item.decorator"
-                            v-if="item.type == 'tree'"
-                            :dropdownStyle="{ maxHeight: '400px', overflow: 'auto' }"
-                            :autosize="{ minRows: 4, maxRows: 4 }"
-                    ></a-tree-select>
-                    <a-cascader
-                            v-decorator="item.decorator"
-                            v-if="item.type == 'cascader'"
-                            @focus="bindEvent(item, 'focus')"
-                            :options="item.options"
-                    ></a-cascader>
-                </a-form-item>
-                <slot name="extra"></slot>
-                <a-form-item :wrapper-col="{ span: 8, offset: 10}">
-                    <a-button type="primary" html-type="submit" ref="transfer" style="display: none">提交</a-button>
-                </a-form-item>
-            </a-form>
-        </a-modal>
-    </a-row>
+                        <a-select
+                                v-decorator="item.decorator"
+                                v-if="item.type == 'select'"
+                                @change="item.change"
+                                @focus="bindEvent(item, 'focus')"
+                                allClear
+                                :mode="modeFormat(item)"
+                                :placeholder="item.placeholder || ''"
+                        >
+                            <a-select-option
+                                    v-for="option in item.options"
+                                    :value="option.value"
+                                    :key="option.value"
+                            >{{option.label}}</a-select-option>
+                        </a-select>
+                        <a-input
+                                v-decorator="item.decorator"
+                                :disabled="item.disabled === true ? true : false"
+                                v-if="item.type == 'input'"
+                                :placeholder="item.placeholder || ''"
+                        ></a-input>
+                        <a-radio-group
+                                v-decorator="item.decorator"
+                                @change="bindEvent(item, 'change')"
+                                v-if="item.type == 'radioGroup'"
+                                :options="item.options"
+                        ></a-radio-group>
+                        <a-switch
+                                v-decorator="item.decorator"
+                                v-if="item.type == 'switch'"
+                                checkedChildren="是"
+                                unCheckedChildren="否"
+                        ></a-switch>
+                        <a-date-picker
+                                v-decorator="item.decorator"
+                                v-if="item.type == 'datetimePicker'"
+                                format="YYYY-MM-DD HH:mm:ss"
+                                style="width: 100%"
+                                :showTime="{ defaultValue: moment('00:00:00', 'HH:mm:ss') }"
+                        ></a-date-picker>
+                        <a-date-picker
+                                v-decorator="item.decorator"
+                                v-if="item.type == 'datePicker'"
+                                format="YYYY-MM-DD"
+                                style="width: 100%"
+                        ></a-date-picker>
+                        <a-input-number
+                                v-decorator="item.decorator"
+                                v-if="item.type == 'number'"
+                                :placeholder="item.placeholder || ''"
+                                style="width: 100%"
+                                :min="item.min || 0 "
+                                :max="item.max || 999999999 "
+                                :precision="item.precision || 0"
+                        ></a-input-number>
+                        <a-textarea
+                                v-decorator="item.decorator"
+                                v-if="item.type == 'textarea'"
+                                :autosize="{ minRows: 4, maxRows: 4 }"
+                                :placeholder="item.placeholder || ''"
+                        ></a-textarea>
+                        <a-tree-select
+                                allowClear
+                                treeDefaultExpandAll
+                                @focus="bindEvent(item, 'focus')"
+                                :treeData="item.treeData"
+                                :placeholder="item.placeholder || ''"
+                                :treeCheckable="item.treeCheckable ? item.treeCheckable : false"
+                                v-decorator="item.decorator"
+                                v-if="item.type == 'tree'"
+                                :dropdownStyle="{ maxHeight: '400px', overflow: 'auto' }"
+                                :autosize="{ minRows: 4, maxRows: 4 }"
+                        ></a-tree-select>
+                        <a-cascader
+                                v-decorator="item.decorator"
+                                v-if="item.type == 'cascader'"
+                                @focus="bindEvent(item, 'focus')"
+                                :options="item.options"
+                        ></a-cascader>
+                    </a-form-item>
+                    <slot name="extra"></slot>
+                    <a-form-item :wrapper-col="{ span: 8, offset: 10}">
+                        <a-button type="primary" html-type="submit" ref="transfer" style="display: none">提交</a-button>
+                    </a-form-item>
+                </a-form>
+            </a-modal>
+        </a-row>
+
+    </div>
 </template>
 <script>
     import { listMixin } from "../maxin/listMixin-java";

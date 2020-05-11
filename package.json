@@ -1,5 +1,5 @@
 {
-  "name": "web-client",
+  "name": "aurora-vue",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -32,7 +32,8 @@
     "vue-svg-icon": "^1.2.9",
     "vuex": "^3.1.1",
     "xlsx": "^0.14.5",
-    "xml-loader": "^1.2.1"
+    "xml-loader": "^1.2.1",
+    "echarts":"4.7.0"
   },
   "devDependencies": {
     "@antv/data-set": "^0.10.2",

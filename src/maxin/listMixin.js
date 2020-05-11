@@ -22,7 +22,7 @@ export const listMixin = {
                 },
                 showQuickJumper: true,
                 showSizeChanger: true,
-                total: 0
+                total: 1
             },
             /* 筛选参数 */
             filters: {},

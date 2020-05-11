@@ -1,11 +1,17 @@
 <template>
     <div>
-         <a-row>
-        <a-divider v-if="gridOption.moduleTitle"  >{{gridOption.moduleTitle}}</a-divider>
-        <slot name="operate">
-            <a-row >
-                  <a-col :span="18" v-if="true">
-                    <a-row type="flex" justify="center" style="margin:1rem;">
+        <!--模块路径开始-->
+        <a-breadcrumb>
+            <a-breadcrumb-item> <a-icon type="home" /></a-breadcrumb-item>
+            <a-breadcrumb-item><a href="javascript:void(0);">系统管理</a></a-breadcrumb-item>
+            <a-breadcrumb-item><a href="javascript:void(0);" >用户管理</a></a-breadcrumb-item>
+        </a-breadcrumb>
+          <!--模块路径结束-->
+
+          <!--查询开始-->
+        <a-card title="查询条件" hoverable size="default" style="margin-top:0.5em" >
+             <a-col :span="24" v-if="true">
+                    <a-row type="flex" justify="center" style="margin:0.5rem;">
                         <a-col :span="5">
                             <label>登录名：</label>
                             <a-input v-model="filter.userName" style="width: 60% ;" placeholder="请输入登录名"></a-input>
@@ -18,8 +24,6 @@
                             <label>角色: </label>
                             <a-select style="width:60%;"
                               placeholder="请选择角色"
-                              class="dark_a_select_search"
-                              dropdownClassName="dark_a_select_option_search"  
                              v-model="filter.roleName">
                                 <a-select-option
                                         v-for="option in roleList"
@@ -28,11 +32,8 @@
                                 </a-select-option>
                             </a-select>
                         </a-col>
-                    </a-row>
-                </a-col>
-                <a-col :span="6">
-                    <a-row type="flex" justify="end">
-                         <a-button
+                       <a-col :span="5">
+                            <a-button
                                 class="operateBtn"
                                 type="primary"
                                 :size="size"
@@ -47,38 +48,43 @@
                                 title="重置"
                                 icon="sync"
                                 @click="reset"
-                                >重置</a-button>
-                        <a-button
-                                class="operateBtn"
-                                type="primary"
-                                icon="plus"
-                                :size="size"
-                                title="增加"
-                                @click="handleAdd"
-                                v-if="isRender('add')"
-                          >新增</a-button>
-                        <a-button
-                                class="operateBtn warning"
-                                icon="delete"
-                                @click="batchDelete"
-                                :size="size"
-                                title="删除选中条目"
-                                v-if="isRender('deleteBatch')"
-                          >删除</a-button>
-                        <slot name="extraOperate"></slot>
-                    </a-row>
-                </a-col>
-            </a-row>
-        </slot>
+                             >重置</a-button>
+                        </a-col>
+                </a-row>
+            </a-col>
+
+        </a-card>
+          <!--查询结束-->
+
+       <!--列表开始-->
+       <a-row>
         <a-table
                 :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"
                 @change="tableChange"
                 :dataSource="dataSource"
                 :columns="columns"
                 :pagination="ipagination"
-                :loading="loading"
                 :rowKey="(item, index) => { return index }"
           >
+           <template slot="title" slot-scope="text, record">
+               <a-button
+                    class="operateBtn"
+                    type="primary"
+                    icon="plus"
+                    :size="size"
+                    title="增加"
+                    @click="handleAdd"
+                    v-if="isRender('add')"
+                >新增</a-button>
+            <a-button
+                    class="operateBtn warning"
+                    icon="delete"
+                    @click="batchDelete"
+                    :size="size"
+                    title="删除选中条目"
+                    v-if="isRender('deleteBatch')"
+                >删除</a-button>
+            </template>
             <template slot="operation" slot-scope="text, record">
                 <a-button
                         title="编辑"
@@ -94,6 +100,9 @@
                 </a-popconfirm>
             </template>
         </a-table>
+      </a-row>
+      <!--列表结束-->
+
         <a-modal
                 :title="title"
                 v-model="visible"
@@ -103,12 +112,11 @@
                 :closable="true"
                 :width="gridOption.singleCol === true ?  550 : 1000"
                 :footer="null"
-                class="modal_table"
         >
             <a-form
                     :form="form"
                     @submit="handleSubmit"
-                    id="form"
+                     id="form"
                     :style="gridOption.singleCol === true ? {} : {'display': 'flex', 'flex-wrap': 'wrap'}"
             >
                 <a-form-item
@@ -121,8 +129,6 @@
                         layout="vertical"
                 >
                     <a-select
-                            class="dark_a_select_addOrUpdate"
-                            dropdownClassName="dark_a_select_option"  
                             v-decorator="item.decorator"
                             v-if="item.type == 'select'"
                             @change="item.change"
@@ -139,7 +145,6 @@
                     </a-select>
 
                     <a-input
-                            class="light_input"
                             v-decorator="item.decorator"
                             :disabled="disabled"
                             v-if="item.type == 'input' &&item.dataIndex === 'userName' "
@@ -161,8 +166,6 @@
                             :placeholder="item.placeholder || ''"
                     ></a-textarea>
                     <a-tree-select
-                           class="dark_a_select_addOrUpdate"
-                            dropdownClassName="dark_select_tree_no_check"
                             allowClear
                             treeDefaultExpandAll
                             @focus="bindEvent(item, 'focus')"
@@ -185,12 +188,12 @@
                  <a-button style="margin-left: 8px"  class="success" icon="save"  @click="ok" type="primary">保存</a-button>
              </div>
         </a-modal>
-    </a-row>
+   
     </div>
 </template>
 <script>
     import {POST,GET} from '../../utils/restful_util'
-    import { listMixin } from "../../maxin/listMixin-java";
+    import { listMixin } from "../../maxin/listMixin";
     import { warning,info} from "../../utils/alert_util";
     import moment from "moment";
     export default {
@@ -208,7 +211,7 @@
                 disabled:false,
                 visible: false,
                 title: "新增",
-                size: "large",
+                size: "default",
                 form: this.$form.createForm(this),
                 editItem: {},
                 columns: [],
@@ -556,7 +559,4 @@
         margin-left: 1em;
     }
    
-</style>
-<style lang="less">
-@import '../../customStyle/dartStyle';
 </style>

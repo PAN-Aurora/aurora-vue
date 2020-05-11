@@ -52,9 +52,7 @@ module.exports = {
     //         ws: false
     //     }
     // }, // string | Object 111 举 /192.168.109.232 
-    proxy: {
-  
-
+    proxy: { //代理地址 可配置多个
       '/api': {
        // target: 'http://192.168.107.72:8080',
         target: 'http://192.168.109.100:8081',
@@ -66,7 +64,6 @@ module.exports = {
       },
 
       '/javaApi': {
-       // target: 'http://192.168.107.72:8080',
         target: 'http://192.168.109.100:8081',
         ws: false,
         changeOrigin: true,

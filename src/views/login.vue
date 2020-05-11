@@ -199,6 +199,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
+//登录背景图
 .login {
   display: flex;
   width: @full;

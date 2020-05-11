@@ -1,20 +1,22 @@
 <template>
     <div>
-        <a-row>
-        <a-divider v-if="gridOption.moduleTitle"  >{{gridOption.moduleTitle}}</a-divider>
-        <slot name="operate">
-            <a-row >
-                  <a-col span="18" v-if="true">
-                    <a-row type="flex" justify="center" style="margin:1rem;">
-                        <a-col :span="8">
+          <!--模块路径开始-->
+        <a-breadcrumb>
+            <a-breadcrumb-item> <a-icon type="home" /></a-breadcrumb-item>
+            <a-breadcrumb-item><a href="javascript:void(0);">系统管理</a></a-breadcrumb-item>
+            <a-breadcrumb-item><a href="javascript:void(0);" >角色管理</a></a-breadcrumb-item>
+        </a-breadcrumb>
+          <!--模块路径结束-->
+  <!--查询开始-->
+        <a-card title="查询条件" hoverable  size="default" style="margin-top:0.5em" >
+             <a-col :span="24" v-if="true">
+                    <a-row type="flex" justify="center" style="margin:0.5rem;">
+                        <a-col :span="5">
                             <label>角色名称：</label>
-                            <a-input v-model="filter.roleName" style="width: 50% ;" placeholder="角色名称"></a-input>
+                            <a-input v-model="filter.roleName" style="width: 60% ;" placeholder="角色名称"></a-input>
                         </a-col>
-                    </a-row>
-                </a-col>
-                <a-col span="6">
-                    <a-row type="flex" justify="end">
-                         <a-button
+                       <a-col :span="5">
+                            <a-button
                                 class="operateBtn"
                                 type="primary"
                                 :size="size"
@@ -29,38 +31,41 @@
                                 title="重置"
                                 icon="sync"
                                 @click="reset"
-                                >重置</a-button>
-                        <a-button
-                                class="operateBtn"
-                                type="primary"
-                                icon="plus"
-                                :size="size"
-                                title="增加"
-                                @click="handleAdd"
-                                v-if="isRender('add')"
-                         >新增</a-button>
-                        <a-button
-                                class="operateBtn warning"
-                                icon="delete"
-                                @click="batchDelete"
-                                :size="size"
-                                title="删除选中条目"
-                                v-if="isRender('deleteBatch')"
-                          >删除</a-button>
-                        <slot name="extraOperate"></slot>
-                    </a-row>
-                </a-col>
-            </a-row>
-        </slot>
+                             >重置</a-button>
+                        </a-col>
+                </a-row>
+            </a-col>
+
+        </a-card>
+          <!--查询结束-->
+    <a-row>
         <a-table
                 :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"
                 @change="tableChange"
                 :dataSource="dataSource"
                 :columns="columns"
                 :pagination="ipagination"
-                :loading="loading"
                 :rowKey="(item, index) => { return index }"
           >
+          <template slot="title" slot-scope="text, record">
+               <a-button
+                    class="operateBtn"
+                    type="primary"
+                    icon="plus"
+                    :size="size"
+                    title="增加"
+                    @click="handleAdd"
+                    v-if="isRender('add')"
+                >新增</a-button>
+            <a-button
+                    class="operateBtn warning"
+                    icon="delete"
+                    @click="batchDelete"
+                    :size="size"
+                    title="删除选中条目"
+                    v-if="isRender('deleteBatch')"
+                >删除</a-button>
+            </template>
             <template slot="operation" slot-scope="text, record">
                 <a-button
                         title="编辑"
@@ -77,6 +82,7 @@
             </template>
             
         </a-table>
+     </a-row>
         <a-modal
                 :title="title"
                 v-model="visible"
@@ -139,7 +145,7 @@
                  <a-button style="margin-left: 8px"  class="success" icon="save"  @click="ok" type="primary">保存</a-button>
              </div>
         </a-modal>
-    </a-row>
+   
    
     </div>
       
@@ -168,7 +174,7 @@
                 treeData: appRouter,
                 visible: false,
                 title: "新增",
-                size: "large",
+                size: "default",
                 form: this.$form.createForm(this),
                 editItem: {},
                 columns: [],
