@@ -1,0 +1,41 @@
+.@{table-prefix-cls} {
+
+    &-thead > tr > th {
+        color: #CCCCCC;
+        font-weight: bold;
+        text-align: left;
+        background: transparent;
+        border: none;
+        font-size: 16px;
+    }
+
+    &-tbody > tr > td {
+        color: rgb(196,203,236);
+        font-size: 16px;
+        background: rgba(168, 180, 229, 0.08);
+        font-weight: bold;
+        border:none;
+    }
+
+    &-thead > tr,
+    &-tbody > tr {
+        &.@{table-prefix-cls}-row-hover,
+        &:hover {
+            &:not(.@{table-prefix-cls}-expanded-row) > td {
+                background: rgba(168, 180, 229, 0.04);
+            }
+        }
+    }
+
+    &-tbody > tr.@{table-prefix-cls}-row-selected td {
+        background: rgba(168, 180, 229, 0.08);
+    }
+
+    &-pagination.@{ant-prefix}-pagination {
+        color: white;
+    }
+
+    &-placeholder {
+        background-color: transparent;
+    }
+}

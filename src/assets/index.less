@@ -1,0 +1,107 @@
+@yellow: #E6A23C;
+@white: #fff;
+@green: #67C23A;
+@blue: #1890ff;
+@lightBlue: #56a9f7f8;
+@red: #F56C6C;
+@em1: 1em;
+@full: 100%;
+@border1: 1px dashed lightgrey;
+
+.warning{
+  color: @white;
+  background: @yellow;
+  border: 1px solid @yellow;
+}
+
+.info{
+  color: @white;
+  background: @lightBlue;
+  border: 1px solid @lightBlue;
+}
+
+.danger{
+  color: @white;
+  background: @red;
+  border: 1px solid @red;
+}
+
+.black {
+  background: #000;
+}
+
+.dividerTitle{
+  font-weight: 500;
+}
+
+.borderRight {
+  border-right: @border1;
+}
+
+.success {
+  color: @white;
+  background: @green;
+  border: 1px solid @green;
+}
+
+.colAuto {
+  height: @full;
+  overflow-y: auto;
+  width: 100%;
+}
+
+.widthFull {
+  width: @full;
+}
+
+.mgBottom{
+  margin-bottom: @em1;
+}
+
+.gridBtn{
+  font-size: 16px;
+  margin-right: 0.5em;
+}
+
+.gridBtn:hover{
+  cursor: pointer;
+  color: white;
+}
+
+.ulPro{
+  max-height: 660px;
+  overflow-y: auto;
+  margin-top: 0.8em;
+  border: 1px dashed lightgray;
+  padding: 0.5em;
+}
+.ulPro h2{
+  text-align: center
+}
+.proTitle{
+  display: block;
+  text-overflow: ellipsis;
+  width: 70%;
+  white-space: nowrap;
+  overflow-x: hidden;
+}
+.ulPro li{
+  display: flex;
+  flex-wrap: nowrap;
+  flex-direction: row;
+  border-bottom: 1px solid lightgray;
+  margin-bottom: 0.8em
+}
+.ulPro li div{
+  flex: 1
+}
+.circle{
+  width: 25px;
+  height: 25px;
+  display: inline-block;
+}
+.cir{
+  border: 2px solid white;
+  box-shadow: 1px 1px 2px black;
+  border-radius: 50%;
+}
