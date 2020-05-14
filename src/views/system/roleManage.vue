@@ -213,10 +213,10 @@
                     modelName: 'user',
                     beforeLoadType:"get",
                     url:{
-                        list:"/javaApi/role.do?method=serachRoleList",
-                        create: '/javaApi/role.do?method=AddOrUpdateRole',
-                        update:"/javaApi/role.do?method=AddOrUpdateRole",
-                        delete:"/javaApi/role.do?method=deleteRole",
+                        list:"/api/role.do?method=serachRoleList",
+                        create: '/api/role.do?method=AddOrUpdateRole',
+                        update:"/api/role.do?method=AddOrUpdateRole",
+                        delete:"/api/role.do?method=deleteRole",
                     },
                    columns: [
                          {       
@@ -369,50 +369,39 @@
         },
         created (){
             if (this.columns.length == 0) {
-                            this.columns = _.cloneDeep(this.gridOption.columns);
-                            //过滤掉不展示的列
-                            this.columns = _.filter(this.columns, col => {
-                                return col.colSpan !== 0;
-                            });
-                            let width = 200;
-                            let btnLength = this.gridOption.extraOperation
-                                ? this.gridOption.extraOperation.length + 2
-                                : 2;
-                            if (this.gridOption.btnOperation) {
-                                if (
-                                    this.gridOption.btnOperation.edit === false ||
-                                    this.gridOption.btnOperation.delete === false
-                                ) {
-                                    btnLength--;
-                                }
-                            }
-                            switch (btnLength) {
-                                case 5:
-                                    width = 240;
-                                    break;
-                            }
-                            if (!(this.gridOption.showOperation === false)) {
-                                this.columns.push({
-                                    title: "操作",
-                                    dataIndex: "operation",
-                                    width: width,
-                                    scopedSlots: { customRender: "operation" }
-                                });
-                            }
-                        }
+                this.columns = _.cloneDeep(this.gridOption.columns);
+                //过滤掉不展示的列
+                this.columns = _.filter(this.columns, col => {
+                    return col.colSpan !== 0;
+                });
+                let width = 200;
+                let btnLength = this.gridOption.extraOperation
+                    ? this.gridOption.extraOperation.length + 2
+                    : 2;
+                if (this.gridOption.btnOperation) {
+                    if (
+                        this.gridOption.btnOperation.edit === false ||
+                        this.gridOption.btnOperation.delete === false
+                    ) {
+                        btnLength--;
+                    }
+                }
+                switch (btnLength) {
+                    case 5:
+                        width = 240;
+                        break;
+                }
+                if (!(this.gridOption.showOperation === false)) {
+                    this.columns.push({
+                        title: "操作",
+                        dataIndex: "operation",
+                        width: width,
+                        scopedSlots: { customRender: "operation" }
+                    });
+                }
+            }
         },
          mounted(){
-            // let portal='portal';
-            // let categoryType = sessionStorage.getItem("user_categoryType");
-            // if(categoryType === '2' ){
-            //      portal =  portal.concat('Department');
-            // } 
-            // //过滤路由，通过不同部门跳转不同的首页
-            // //过滤多余的菜单数据
-            // this.treeData  = lodash.filter(appRouter, function(o) { 
-            //         return  o.key === portal ||  o.key.indexOf("portal") === -1;
-            // });
-             //this.treeData  = appRouter;
 
              this.treeData  = lodash.filter(appRouter, function(o) { 
                     return  o.children.length>0;
@@ -436,7 +425,4 @@
     .mgl {
         margin-left: 1em;
     }
-</style>
-<style lang="less">
-@import '../../customStyle/dartStyle';
 </style>

@@ -51,10 +51,10 @@ module.exports = {
     //         target: '192.168.1.132:3000/',
     //         ws: false
     //     }
-    // }, // string | Object 111 举 /192.168.109.232 
+    // }, 
     proxy: { //代理地址 可配置多个
       '/api': {
-        target: 'http://192.168.109.100:8081',
+        target: 'http://127.0.0.1:8081',
         ws: false,
         changeOrigin: true,
         pathRewrite: {
@@ -63,7 +63,7 @@ module.exports = {
       },
 
       '/javaApi': {
-        target: 'http://192.168.109.100:8081',
+        target: 'http://127.0.0.1:8081',
         ws: false,
         changeOrigin: true,
         pathRewrite: {
