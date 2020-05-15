@@ -114,14 +114,14 @@
                             class="light_input"
                             v-decorator="item.decorator"
                             :disabled="disabled"
-                            v-if="item.type == 'input' &&item.dataIndex === 'roleName' "
+                            v-if="item.type == 'input' && item.dataIndex === 'name' "
                             :placeholder="item.placeholder || ''"
                     ></a-input>
 
                      <a-input
                             class="light_input"
                             v-decorator="item.decorator"
-                             v-if="item.type == 'input' &&item.dataIndex != 'roleName' "
+                             v-if="item.type == 'input' &&item.dataIndex != 'name' "
                             :placeholder="item.placeholder || ''"
                     ></a-input>
 
