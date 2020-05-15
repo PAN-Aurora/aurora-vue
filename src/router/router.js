@@ -18,15 +18,15 @@ export const renderRouter = {
 
 export const appRouter = [
     {
-        path: '/portal',
+        path: '/home',
         iconType: 'home',
         title: '首页',
-        key: 'portal',
+        key: 'home',
         component: Main,
         redirect: '/home',
         children: [
-            { path: '/portal',iconType:'home', title: '首页', key: 'portal',component: (resolve) => require(['../views/home/HomeAll.vue'], resolve)},
-        ]
+            { path: '/home',iconType:'home', title: '首页', key: 'home',component: (resolve) => require(['../views/home/HomeAll.vue'], resolve)},
+         ]
     },
     {
     path: '/system',
@@ -37,7 +37,7 @@ export const appRouter = [
     children: [
       { path: '/system/userManage',iconType:'user', title: '用户管理', key: 'userManage',component: (resolve) => require(['../views/system/userManage.vue'], resolve)},
       { path: '/system/roleManage',iconType:'team', title: '角色管理',key: 'roleManage', component: (resolve) => require(['../views/system/roleManage.vue'], resolve)},
-      { path: '/system/logManage',iconType:'file-search', title: '操作日志',key: 'logManage',component: (resolve) => require(['../views/system/logManage.vue'], resolve)},
+      { path: '/system/logManage', iconType:'file-search', title: '操作日志',key: 'logManage',component: (resolve) => require(['../views/system/logManage.vue'], resolve)},
     ]
   },
 

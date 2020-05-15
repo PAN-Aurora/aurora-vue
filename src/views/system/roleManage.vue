@@ -13,7 +13,7 @@
                     <a-row type="flex" justify="center" style="margin:0.5rem;">
                         <a-col :span="5">
                             <label>角色名称：</label>
-                            <a-input v-model="filter.roleName" style="width: 60% ;" placeholder="角色名称"></a-input>
+                            <a-input v-model="filter.name" style="width: 60% ;" placeholder="角色名称"></a-input>
                         </a-col>
                        <a-col :span="5">
                             <a-button
@@ -44,6 +44,7 @@
                 @change="tableChange"
                 :dataSource="dataSource"
                 :columns="columns"
+                 bordered
                 :pagination="ipagination"
                 :rowKey="(item, index) => { return index }"
           >
@@ -152,7 +153,7 @@
 </template>
 <script>
     import {POST,GET} from '../../utils/restful_util'
-    import { listMixin } from "../../maxin/listMixin-java";
+    import { listMixin } from "../../maxin/listMixin";
     import {appRouter} from '../../router/router'
     import { warning,info} from "../../utils/alert_util";
     import moment from "moment";
@@ -180,32 +181,35 @@
                 columns: [],
        
                 filter:{
-                    roleName:"",
+                    name:"",
                 },
                 gridOption: {
                     beforeSubmitType:"post",
                     beforeAdd: (item) => {
-                    this.checkedKeys =[];
+                        this.checkedKeys =[];
                     },
                     beforeEdit: (item) => {
-                        if(item.roleModuleIds!=null && item.roleModuleIds!=''){
-                            this.checkedKeys = item.roleModuleIds.split(",")
+                        let  rosourceList =  item.rosourceList;
+                        if(item.rosourceList!=null && item.rosourceList.length>0){
+                             rosourceList.forEach(item =>{
+                                this.checkedKeys.push(item.module);
+                        })
                         }else{
                             this.checkedKeys =[];
                         }
-
                     },
-                    beforeSubmit:(values,item)=>{
+                    beforeSubmit:(values,item)=>{module
+                      if(this.checkedKeys.length>0){
+                         let  rosourceList = [];
+                         this.checkedKeys.forEach(item =>{
+                                rosourceList.push({'module':item});
+                          })
                          //权限
-                        values.roleModuleIds = this.checkedKeys.toString();
-                        let data = new FormData();
-                        if(item.id){
-                            Object.assign(item,values);
-                            data.append("dataList",JSON.stringify(item))
-                        }else{
-                            data.append("dataList",JSON.stringify(values))
-                        }
-                        return data;
+                         console.info(rosourceList);
+                         values.rosourceList = rosourceList;
+                       }
+                        values.id = item.id
+                        return values;
                     },
                     gridFilter:{
                     },
@@ -213,10 +217,10 @@
                     modelName: 'user',
                     beforeLoadType:"get",
                     url:{
-                        list:"/api/role.do?method=serachRoleList",
-                        create: '/api/role.do?method=AddOrUpdateRole',
-                        update:"/api/role.do?method=AddOrUpdateRole",
-                        delete:"/api/role.do?method=deleteRole",
+                        list:"/api/role/getRoleList",
+                        create: '/api/role/saveRole',
+                        update:"/api/role/updateRole",
+                        delete:"/api/role/deleteRole",
                     },
                    columns: [
                          {       
@@ -229,14 +233,14 @@
                      },
                        {
                         title: '角色名',
-                        dataIndex: 'roleName',
+                        dataIndex: 'name',
                         type: 'input',
-                        decorator: ['roleName',{rules: [{ required: true, message: '角色名称不能为空！' }]}]
+                        decorator: ['name',{rules: [{ required: true, message: '角色名称不能为空！' }]}]
                     }, {
                         title: '备注',
-                        dataIndex: 'roleDesc',
+                        dataIndex: 'description',
                         type: 'input',
-                        decorator: ['roleDesc']
+                        decorator: ['description']
                     }],
                     singleCol: true,
                 },
@@ -321,7 +325,7 @@
                     this.selectedRowKeys.forEach(num => {
                         ids.push(this.dataSource[num].id);
                     });
-                    this.handleDelete(ids.toString());
+                    this.handleDelete(ids);
                     this.selectedRowKeys=[];
                 }
             },
@@ -333,7 +337,7 @@
                 return flag;
             },
             onDelete(record) {
-                this.handleDelete(record.id);
+                this.handleDelete([record.id]);
                 this.selectedRowKeys=[];
             },
             onSelectChange(selectedRowKeys, rows) {
@@ -402,10 +406,12 @@
             }
         },
          mounted(){
-
-             this.treeData  = lodash.filter(appRouter, function(o) { 
-                    return  o.children.length>0;
-            });
+             let that= this;
+        
+              that.treeData  = lodash.filter(appRouter, function(o) { 
+                            return  o.children.length>0;
+                    });
+             
         },
         components: {
             

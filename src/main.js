@@ -130,6 +130,8 @@ Vue.prototype.$g2= g2
 Vue.prototype.$echarts= echarts
 Vue.prototype.$moment = moment;
 
+console.info(router);
+
 new Vue({
     router: router,
     store,

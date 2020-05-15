@@ -43,7 +43,7 @@ export const listMixin = {
     },
     methods: {
         generateFilter (transFilter) {
-            let filter = transFilter ? transFilter : {condition: this.gridOption.gridFilter}
+            let filter = transFilter ? transFilter : this.gridOption.gridFilter
             filter.start = this.ipagination.current
             filter.limit = this.ipagination.pageSize
             if (this.gridOption.beforeSearch) {
@@ -52,11 +52,11 @@ export const listMixin = {
             return filter
         },
         loadData (filter) {
-            let url = this.gridOption.url ? this.gridOption.url.list : '/iptv_ln/' + this.gridOption.modelName + '/list'
+            let url = this.gridOption.url ? this.gridOption.url.list : '/api/' + this.gridOption.modelName + '/list'
             this.loading = true
             GET(this, url, this.generateFilter(filter), (res) => {
                 this.loading = false
-                if (res.code == 1) {
+                if (res.code == 200) {
                     this.dataSource = res.data.list
                     this.response = res.data
                     this.ipagination.total = res.data.totalCount;
@@ -92,21 +92,16 @@ export const listMixin = {
                     console.log(this.editItem)
                     if (this.editItem.id) {
                         values.id = this.editItem.id
-                        url = this.gridOption.url ? this.gridOption.url.update : '/iptv_ln/' + this.gridOption.modelName + '/update'
+                        url = this.gridOption.url ? this.gridOption.url.update : '/api/' + this.gridOption.modelName + '/update'
                     } else {
-                        url =  this.gridOption.url ? this.gridOption.url.create : '/iptv_ln/' + this.gridOption.modelName + '/create'
+                        url =  this.gridOption.url ? this.gridOption.url.create : '/api/' + this.gridOption.modelName + '/create'
                     }
                     values = this.formatValues(values)
                     if (this.gridOption.beforeSubmit) {
                         values = this.gridOption.beforeSubmit(values, this.editItem)
                     }
                     console.log(values)
-                    if(values.orgArr){
-                        values.orgId = values.orgArr[3];
-                        values.levelType = values.orgArr[2];
-                        values.areaCode = values.orgArr[1];
-                        delete values.orgArr;
-                    }
+
                     if(values) {
                         if(this.needFormData){
                             let formData  = new FormData();
@@ -114,7 +109,7 @@ export const listMixin = {
                                 formData.append(item,values[item]);
                             }
                             POST(this, url, formData, (res) => {
-                                if (res.code == 1) {
+                                if (res.code == 200) {
                                     this.visible = false
                                     info(this, res.message)
                                     this.loadData()
@@ -124,7 +119,7 @@ export const listMixin = {
                             })
                         }else{
                             POST(this, url, values, (res) => {
-                                if (res.code == 1) {
+                                if (res.code == 200) {
                                     this.visible = false
                                     info(this, res.message)
                                     this.loadData()
@@ -138,7 +133,7 @@ export const listMixin = {
             });
         },
         handleDelete (ids) { // 调用删除接口
-            let url = this.gridOption.url ? this.gridOption.url.delete :'/iptv_ln/' + this.gridOption.modelName + '/delete'
+            let url = this.gridOption.url ? this.gridOption.url.delete :'/api/' + this.gridOption.modelName + '/delete'
             let trans = {};
             if(this.needFormData){
                 let formData = new FormData();
@@ -148,7 +143,7 @@ export const listMixin = {
                 trans = {ids:ids};
             }
             POST(this, url, trans, (res) => {
-                if (res.code === 1) {
+                if (res.code === 200) {
                     this.loadData()
                     info(this, res.message)
                 } else {
@@ -157,7 +152,7 @@ export const listMixin = {
             })
         },
         handleExport (ids) { // 导出并下载文档
-            let url = this.gridOption.url ? this.gridOption.url.export :'/iptv_ln/' + this.gridOption.modelName + '/export';
+            let url = this.gridOption.url ? this.gridOption.url.export :'/api/' + this.gridOption.modelName + '/export';
             let trans = {};
             trans[this.gridOption.exportKey] = ids;
             GET(this, url, trans, (res) => {
