@@ -44,7 +44,7 @@ export const listMixin = {
     methods: {
         generateFilter (transFilter) {
             let filter = transFilter ? transFilter : this.gridOption.gridFilter
-            filter.start = this.ipagination.current
+            filter.current = this.ipagination.current
             filter.limit = this.ipagination.pageSize
             if (this.gridOption.beforeSearch) {
                 filter = this.gridOption.beforeSearch(filter)
