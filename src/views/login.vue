@@ -1,6 +1,6 @@
 <style scoped>
-/deep/ .ant-input-affix-wrapper .ant-input:not(:first-child) {
-  padding-left: 18%;
+ /deep/ .ant-input-affix-wrapper .ant-input:not(:first-child) {
+   padding-left: 18%;
 }
 </style>
 <template>
@@ -250,7 +250,4 @@ export default {
     }
   }
 }
-</style>
-<style lang="less">
-@import '../customStyle/dartStyle';
 </style>

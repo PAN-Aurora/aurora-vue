@@ -51,7 +51,3 @@
         }
     }
 </script>
-
-<style lang="less">
- @import '../../customStyle/dartStyle';
- </style>

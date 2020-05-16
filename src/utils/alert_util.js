@@ -43,7 +43,7 @@ export function confirm (_this,title,content,successCallback) {
     title: title,
     content: content,
     onOk: function(){
-     successCallback(true)
+       successCallback(true)
     }
   };
   _this.$confirm(config);
