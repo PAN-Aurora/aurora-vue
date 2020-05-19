@@ -216,6 +216,9 @@
                     beforeSubmitType:"post",
                     beforeSubmit:(values,item)=>{
                         console.info(values);
+                        values.role = {
+                             id: values.role
+                        }
                         return values;
                     },
                     gridFilter:{
@@ -251,6 +254,19 @@
                                         }]
                                  }]
                         },
+                         {
+                            title: '密码',
+                            dataIndex: 'password',
+                            type: 'input',
+                            colSpan:0,
+                            decorator: ['password'
+                                ,{ rules:
+                                        [{
+                                             required: true
+                                            , message: '密码不能为空！'
+                                        }]
+                                 }]
+                        },
                      {
                         title: '真实姓名',
                         dataIndex: 'realName',
@@ -264,7 +280,12 @@
                         options: [],
                         decorator: ['role', {rules: [{ required: true, message: '角色不能为空！' }]}],
                         customRender: (role) => {
-                            return role.name;
+                            if(role && role.name){
+                                return role.name;
+                            }else{
+                                return '';
+                            }
+                            
                         }
                     },
                        
@@ -434,7 +455,7 @@
                     limit:10000
                 }
                 GET(this, '/api/role/getRoleList', params, (res) => {
-                    let proColumn = this.gridOption.columns[3]
+                    let proColumn = this.gridOption.columns[4]
                     if (res.code === 200) {
                         this.roleList = res.data.list.map((role) => {
                             return {
