@@ -186,9 +186,9 @@
     </div>
 </template>
 <script>
-    import {POST,GET} from '../../utils/restful_util'
-    import { listMixin } from "../../maxin/listMixin";
-    import { warning,info} from "../../utils/alert_util";
+    import {POST,GET} from '@/utils/restful_util'
+    import { listMixin } from "@/maxin/listMixin";
+    import { warning,info} from "@/utils/alert_util";
     import moment from "moment";
     export default {
          mixins: [listMixin],
@@ -259,10 +259,11 @@
                             dataIndex: 'password',
                             type: 'input',
                             colSpan:0,
+                            placeholder:'不输入密码默认123456',
                             decorator: ['password'
                                 ,{ rules:
                                         [{
-                                             required: true
+                                             required: false
                                             , message: '密码不能为空！'
                                         }]
                                  }]
@@ -347,9 +348,7 @@
                 this.searchResult();
             },
             tableChange(pagination) {
-                this.ipagination.current = pagination.current;
-                this.ipagination.pageSize = pagination.pageSize;
-                //this.ipagination.pageSizeOption = pagination.pageSizeOption;
+                 Object.assign(this.ipagination,pagination);
                  this.loadData(this.filter);
             },
             //新增
@@ -391,6 +390,9 @@
                             obj[key] = clone[key]
                         }
                     }
+                    obj.password ='';
+                    obj.role = obj.role.id;
+                    console.info(obj.role);
 
                     // carrynie 去除多余属性
                     this.form.setFieldsValue(obj);
@@ -405,7 +407,7 @@
                     this.selectedRowKeys.forEach(num => {
                         ids.push(this.dataSource[num].id);
                     });
-                    this.handleDelete(ids.toString());
+                    this.handleDelete(ids);
                     this.selectedRowKeys=[];
                 }
             },
@@ -417,7 +419,7 @@
                 return flag;
             },
             onDelete(record) {
-                this.handleDelete(record.id);
+                this.handleDelete([record.id]);
                 this.selectedRowKeys=[];
             },
             onSelectChange(selectedRowKeys, rows) {

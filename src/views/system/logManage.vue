@@ -42,10 +42,17 @@
                         {
                             title: '登录用户',
                             dataIndex: 'logUser'
-                        }, {
+                        },
+                         {
                             title: '用户IP',
                             dataIndex: 'logIp'
                         }, 
+                         {
+                            title: '日志类型',
+                            dataIndex: 'logType',
+                            scopedSlots: {customRender: 'logTypeFilter'},
+                        }, 
+                        
                         {
                             title: '操作时间',
                             dataIndex: 'logCreateTime'

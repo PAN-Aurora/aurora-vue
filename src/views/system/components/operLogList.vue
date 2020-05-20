@@ -1,15 +1,23 @@
 <template>
-    <div>
+     <div>
           <!--查询开始-->
         <a-card title="查询条件" hoverable size="default" style="margin-top:0.5em;margin-bottom:0.5em" >
-            <a-row type="flex" justify="center" style="margin-bottom: 10px;" v-if="queryType === 'operLog' || queryType === 'errorLog'">
+            <a-row type="flex" justify="center" style="margin-bottom: 10px;">
                 <a-col :span="4">
                     <label class="dark_query_font">模块名称：</label>
-                    <a-input placeholder="任务名称" v-model="filter.logModule" style="width: 50%"></a-input>
+                    <a-input placeholder="模块名称" v-model="filter.logModule" style="width: 50%"></a-input>
                 </a-col>
                 <a-col :span="4">
                     <label class="dark_query_font">登录用户：</label>
-                    <a-input placeholder="操作名称" v-model="filter.logUser" style="width: 50%"></a-input>
+                    <a-input placeholder="登录用户" v-model="filter.logUser" style="width: 50%"></a-input>
+                </a-col>
+                <a-col :span="4" >
+                        <label class="dark_query_font">日志类型：</label>
+                        <a-select style="width:60%;" placeholder="日志类型"  
+                           v-model="filter.logType">
+                            <a-select-option value="1">操作日志</a-select-option>
+                            <a-select-option value="2">异常日志</a-select-option>
+                        </a-select>
                 </a-col>
                 <a-col :span="4">
                     <label class="dark_query_font">开始时间：</label>
@@ -36,10 +44,11 @@
                   :pagination="pagination"
                   @change="tableChange"
                   :loading="loading"
+                   bordered
                   >
-                  <template v-if="queryType === 'monitorLog'" slot="monitorType" slot-scope="text">
-                      {{text|monitorTypeFilter}}
-                  </template>
+                   <span slot="logTypeFilter" slot-scope="text">
+                                {{text|logTypeFilter}}
+                    </span>
                   </a-table>
             </a-col>
         </a-row>
@@ -48,12 +57,9 @@
 
 <script>
 import {GET} from '@/utils/restful_util';
-import { org_mixin } from '@/maxin/org_mixin';
-import { common_mixin } from '@/maxin/common_mixin';
 import moment from 'moment';
 export default {
     name: 'operLogList',
-    mixins: [org_mixin,common_mixin],
     props: {
         columns: Array,
         queryType: String,
@@ -77,11 +83,11 @@ export default {
             },
             logList: [],
             loading: false, // table加载效果状态位
-            panelDown: false
         }
     },
     methods: {
-        resetFilter() { // 清空查询条件
+        // 清空查询条件
+        resetFilter() { 
             this.filter = {};
             this.currentFilter={};
             this.orgArr = [];
@@ -90,7 +96,8 @@ export default {
             this.pagination.total = 0;
             this.getDataSource();
         },
-        getDataSource() { // 调用日志查询接口，查询日志列表，接收返回数据
+        // 调用日志查询接口，查询日志列表，接收返回数据
+        getDataSource() { 
             this.loading = true;
             this.currentFilter.start = this.pagination.current;
             this.currentFilter.limit = this.pagination.pageSize;
@@ -105,7 +112,8 @@ export default {
                 }
             })
         },
-        queryFromBtn() { // 通过按钮手动调用查询接口
+         // 通过按钮手动调用查询接口
+        queryFromBtn() {
             this.currentFilter = {}; // 清除正在使用的查询条件
             this.currentFilter = Object.assign(this.currentFilter,this.filter); // 覆盖查询条件
             this.currentFilter.startTime = this.currentFilter.startTime ? moment(this.currentFilter.startTime).format('YYYY-MM-DD HH:mm:ss') : '';
@@ -117,19 +125,14 @@ export default {
             Object.assign(this.pagination, pagination);
             this.getDataSource();
         },
-        showMoreFilter(){
-            this.panelDown = !this.panelDown;
-        }
     },
     filters: {
-        monitorTypeFilter: (text) => {
+        logTypeFilter: (text) => {
             switch(text) {
-                case 'live':
-                    return '直播';
-                case 'vod':
-                    return '点播';
-                case 'review':
-                    return '回看';
+                case 1:
+                    return '操作日志';
+                case 2:
+                    return '异常日志';
                 default:
                     return '';
             }
@@ -139,9 +142,6 @@ export default {
         this.getDataSource();
     },
     created() {
-        if(this.queryType === 'monitorLog') {
-            this.orgMount = true;
-        }
     }
 }
 </script>

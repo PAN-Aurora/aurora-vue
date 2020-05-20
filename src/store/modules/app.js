@@ -1,7 +1,7 @@
 const app = {
     state: {
         menuList: [],
-        menuActiveKey: ['/portal'],
+        menuActiveKey: ['/home'],
         openKeys: [],
         debugMode: false,
         defaultPassword: '123456'

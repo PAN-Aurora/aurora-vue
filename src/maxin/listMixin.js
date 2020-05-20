@@ -59,7 +59,7 @@ export const listMixin = {
                 if (res.code == 200) {
                     this.dataSource = res.data.list
                     this.response = res.data
-                    this.ipagination.total = res.data.totalCount;
+                    this.ipagination.total = res.data.count;
                 } else {
                     warning(this, res.message)
                 }
