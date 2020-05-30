@@ -61,6 +61,7 @@
                     icon="plus"
                     :size="size"
                     title="增加"
+                    v-hasPermission="'user_add'"
                     @click="handleAdd"
                     v-if="isRender('add')"
                 >新增</a-button>
@@ -70,6 +71,7 @@
                     @click="batchDelete"
                     :size="size"
                     title="删除选中条目"
+                    v-hasPermission="'user_delete'"
                     v-if="isRender('deleteBatch')"
                 >删除</a-button>
             </template>
@@ -80,6 +82,7 @@
                         @click="handleEdit(record)"
                         icon="edit"
                          shape="circle"
+                         v-hasPermission="'user_update'"
                         size="small"
                         v-if="isRender('edit')"
                 ></a-button>
@@ -215,7 +218,6 @@
                 gridOption: {
                     beforeSubmitType:"post",
                     beforeSubmit:(values,item)=>{
-                        console.info(values);
                         values.role = {
                              id: values.role
                         }
@@ -392,7 +394,6 @@
                     }
                     obj.password ='';
                     obj.role = obj.role.id;
-                    console.info(obj.role);
 
                     // carrynie 去除多余属性
                     this.form.setFieldsValue(obj);
@@ -466,7 +467,6 @@
                             }
                         })
                         proColumn.options = this.roleList
-                         console.info(proColumn.options);
                     }
                 })
             }

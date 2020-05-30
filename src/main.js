@@ -15,19 +15,12 @@ import { store } from './store'
 import {appRouter} from './router/router'
 import './icons/index'
 import request from './utils/request.js'
-// import './customStyle/darkStyle.less'
-// import VueAMap from 'vue-amap';
+import * as  hasPermission from './utils/btn.js'
 import echarts from 'echarts'
 import moment from 'moment'
-
 import {warning, info} from '@/utils/alert_util'
 import { POST,GET } from '@/utils/restful_util';
 
-
-Vue.prototype.$warning = warning;
-Vue.prototype.$info = info;
-Vue.prototype.POST = POST;
-Vue.prototype.GET = GET;
 
 
 let count = 1
@@ -80,13 +73,6 @@ axios.interceptors.response.use(response => {
         Vue.ls.remove('userToken')
         router.push({path: '/login'})
     }
-    /* if (!data.status || data.status !== -5) {//token出错状态为-5
-        return response;
-    }
-    if (data.status && data.status === -5) { //token出错状态为-5
-        Vue.ls.remove('userToken')
-        router.push({path: '/login'})
-    } */
     return Promise.reject(data)
 }, error => {
     return Promise.reject(error)
@@ -114,23 +100,22 @@ router.beforeEach((to, from, next) => {
     }
 });
 
-// Vue.use(VueAMap)
-// VueAMap.initAMapApiLoader({
-//   key: '2feb379fe1534266760d8e8c87e009c2',
-//   plugin: ['AMap.Scale', 'AMap.OverView', 'AMap.ToolBar', 'AMap.MapType'],
-//   uiVersion: '1.0.11'
-// })
 Vue.use(request)
 Vue.use(Antd)
 Vue.use(VueCookie)
 Vue.use(vuels, lsOptions)
-Vue.prototype.$axios = axios
-Vue.prototype.$hls= hls
-Vue.prototype.$g2= g2
+Vue.use(hasPermission)
+Vue.prototype.$axios = axios;
+Vue.prototype.$hls= hls;
+Vue.prototype.$g2= g2;
 Vue.prototype.$echarts= echarts
 Vue.prototype.$moment = moment;
+Vue.prototype.$lodash = lodash;
 
-console.info(router);
+Vue.prototype.$warning = warning;
+Vue.prototype.$info = info;
+Vue.prototype.POST = POST;
+Vue.prototype.GET = GET;
 
 new Vue({
     router: router,

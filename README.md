@@ -41,7 +41,7 @@ gridOption: {
     },
     extraOperation: [       //额外的按钮显示
         {
-            title: '下发录制任务',
+            title: '按钮名称',
             iconFormat: (row) => {
                 let icon = 'play-circle'
                 if (row.state) {

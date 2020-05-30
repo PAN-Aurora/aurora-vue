@@ -56,6 +56,7 @@
                     :size="size"
                     title="增加"
                     @click="handleAdd"
+                      v-hasPermission="'role_add'"
                     v-if="isRender('add')"
                 >新增</a-button>
             <a-button
@@ -63,6 +64,7 @@
                     icon="delete"
                     @click="batchDelete"
                     :size="size"
+                      v-hasPermission="'role_update'"
                     title="删除选中条目"
                     v-if="isRender('deleteBatch')"
                 >删除</a-button>
@@ -74,6 +76,7 @@
                         @click="handleEdit(record)"
                         icon="edit"
                          shape="circle"
+                           v-hasPermission="'role_update'"
                         size="small"
                         v-if="isRender('edit')"
                 ></a-button>
@@ -134,6 +137,9 @@
                                  v-model="checkedKeys"
                                 :treeData="treeData"
                                 :checkStrict="false"
+                                :replaceFields="replaceFields"
+                                @check="menuCheck"
+                                multiple
                         />
                     </a-card>
               </template>
@@ -172,13 +178,15 @@
             return {
                 disabled:false,
                 checkedKeys: [],
-                treeData: appRouter,
+                allCheckedKeys: [],
+                treeData:[],
                 visible: false,
                 title: "新增",
                 size: "default",
                 form: this.$form.createForm(this),
                 editItem: {},
                 columns: [],
+                replaceFields:{children:'children', title:'title', key:'idKey' },
        
                 filter:{
                     name:"",
@@ -192,17 +200,17 @@
                         let  rosourceList =  item.rosourceList;
                         if(item.rosourceList!=null && item.rosourceList.length>0){
                              rosourceList.forEach(item =>{
-                                this.checkedKeys.push(item.module);
+                                this.checkedKeys.push(item.id);
                         })
                         }else{
                             this.checkedKeys =[];
                         }
                     },
-                    beforeSubmit:(values,item)=>{module
-                      if(this.checkedKeys.length>0){
+                    beforeSubmit:(values,item)=>{
+                      if(this.allCheckedKeys.length>0){
                          let  rosourceList = [];
-                         this.checkedKeys.forEach(item =>{
-                                rosourceList.push({'module':item});
+                         this.allCheckedKeys.forEach(item =>{
+                                rosourceList.push({'id':item});
                           })
                          //权限
                          console.info(rosourceList);
@@ -258,6 +266,18 @@
             },
             searchResult() {
                 this.loadData(this.filter);
+            },
+            menuCheck(checkedKeys, e){
+                console.info(checkedKeys);
+                console.info(e.halfCheckedKeys);
+                let halfCheckedKeys = e.halfCheckedKeys ;
+                let that = this;
+                that.allCheckedKeys = checkedKeys;
+
+                 halfCheckedKeys.forEach(function(v){
+                    that.allCheckedKeys.push(v)
+                 });
+                console.info(that.allCheckedKeys);
             },
              reset(){
                 let _this = this;
@@ -406,12 +426,8 @@
             }
         },
          mounted(){
-             let that= this;
-        
-              that.treeData  = lodash.filter(appRouter, function(o) { 
-                            return  o.children.length>0;
-                    });
-             
+                this.treeData = this.$store.state.baseData.menuList;
+                console.info( this.treeData);
         },
         components: {
             

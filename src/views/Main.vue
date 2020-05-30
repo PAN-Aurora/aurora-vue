@@ -71,7 +71,7 @@ export default {
   },
   computed: {
     userName () {
-      return sessionStorage.getItem('userName') ? sessionStorage.getItem('userName') : ''
+      return sessionStorage.getItem('realName') ? sessionStorage.getItem('realName') : ''
     }
   },
   methods: {

@@ -169,7 +169,10 @@ export default {
         this.$router.addRoutes(menus.addRoutes);
         this.$store.commit("updateMenulist", menus.menu);
         this.$store.dispatch("getBaseData");
+
         sessionStorage.setItem("userName", res.user.username);
+        sessionStorage.setItem("realName", res.user.realName);
+        sessionStorage.setItem("btnPermission", menuArray);
         sessionStorage.setItem("userId", res.id);
         sessionStorage.setItem("account", this.account);
         this.$ls.set("resMenu", JSON.stringify(menuArray));
