@@ -6,7 +6,7 @@
         <a-row type="flex">
           <a-col span="21">
             <div class="logo"></div>
-            <h1>全国IPTV智能监管系统</h1>
+            <h1>Ant Design of Vue</h1>
           </a-col>
           <a-col span="3">
             <div class="icons-list">

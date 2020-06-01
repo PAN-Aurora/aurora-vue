@@ -60,15 +60,6 @@ module.exports = {
         pathRewrite: {
           '^/api': '/aurora-web/api'
         }
-      },
-
-      '/javaApi': {
-        target: 'http://127.0.0.1:8081',
-        ws: false,
-        changeOrigin: true,
-        pathRewrite: {
-          '^/javaApi': '/aurora-web/api'
-        }
       }
     },
     before: app => { }

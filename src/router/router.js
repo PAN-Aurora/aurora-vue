@@ -25,7 +25,7 @@ export const appRouter = [
         component: Main,
         redirect: '/home',
         children: [
-            { path: '/home',iconType:'home', title: '首页', key: 'home',component: (resolve) => require(['../views/home/HomeAll.vue'], resolve)},
+            //{ path: '/home',iconType:'home', title: '首页', key: 'home',component: (resolve) => require(['../views/home/HomeAll.vue'], resolve)},
          ]
     },
     {

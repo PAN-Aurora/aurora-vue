@@ -1,20 +1,6 @@
 <template>
 
     <a-row type="flex" justify="space-around" align="middle">
-        <!-- <div class="filterRow" v-if="renderOrNot('cascader')">
-            <label>{{filterColumns.cascader[0].label}}：</label>
-            <a-cascader
-                    :options="frontOptions"
-                    :loadData="loadOrgData"
-                    placeholder="机构信息"
-                    class="dark_cascader"
-                    popupClassName="dark_cascader_popup divScroll"
-                    style="width: 80%;"
-                    v-model="orgArr"
-                    changeOnSelect
-                    @change="getFront"
-            />
-        </div> -->
         <div class="filterRow" v-if="renderOrNot('basic')||renderOrNot('cascader')">
             <label v-if="renderOrNot('cascader')">{{filterColumns.cascader[0].label}}：</label>
             <a-cascader
