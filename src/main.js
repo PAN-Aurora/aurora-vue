@@ -20,8 +20,8 @@ import echarts from 'echarts'
 import moment from 'moment'
 import {warning, info} from '@/utils/alert_util'
 import { POST,GET } from '@/utils/restful_util';
-
-
+//覆盖样式
+import './customStyle/darkStyle.less'
 
 let count = 1
 const lsOptions = {
@@ -54,6 +54,7 @@ axios.interceptors.request.use(
         return config;
     },
     error => {
+
         return Promise.reject(error.response);
     });
 

@@ -34,7 +34,21 @@ module.exports = {
     loaderOptions: {
       // 向 CSS 相关的 loader 传递选项
       less: {
-        javascriptEnabled: true
+        javascriptEnabled: true,
+        modifyVars: {
+          /* less 变量覆盖，用于自定义 ant design 主题 */
+          'primary-color': '#F5222D',
+          'link-color': '#F5222D',
+          'border-radius-base': '4px',
+        },
+        // lessOptions: {
+        //   modifyVars: {
+        //     'primary-color': '#1DA57A',
+        //     'link-color': '#1DA57A',
+        //     'border-radius-base': '2px',
+        //   },
+        //   javascriptEnabled: true,
+        // },
       }
     }
   },
@@ -42,7 +56,7 @@ module.exports = {
   devServer: {
     open: process.platform === 'darwin',
     host: '0.0.0.0',
-    port: 8080,
+    port: 8088,
     https: false,
     hotOnly: false,
     // 参阅 https://github.com/vuejs/vue-cli/blob/dev/docs/cli-service.md#configuring-proxy
@@ -58,7 +72,7 @@ module.exports = {
         ws: false,
         changeOrigin: true,
         pathRewrite: {
-          '^/api': '/aurora-web/api'
+          '^/api': '/aurora-base/api'
         }
       }
     },
