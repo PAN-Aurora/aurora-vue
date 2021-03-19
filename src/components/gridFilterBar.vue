@@ -2,19 +2,6 @@
 
     <a-row type="flex" justify="space-around" align="middle">
         <div class="filterRow" v-if="renderOrNot('basic')||renderOrNot('cascader')">
-            <label v-if="renderOrNot('cascader')">{{filterColumns.cascader[0].label}}：</label>
-            <a-cascader
-                    v-if="renderOrNot('cascader')"
-                    :options="frontOptions"
-                    :loadData="loadOrgData"
-                    :placeholder="filterColumns.cascader[0].label"
-                    class="dark_cascader_search"
-                    popupClassName="dark_cascader_popup divScroll"
-                    style="width: 10%;margin-right:10px;"
-                    v-model="orgArr"
-                    changeOnSelect
-                    @change="getFront"
-            />
             <section v-for="(col, idx) in filterColumns.basic" :key="idx" :style="{width:col.sectionWidth || ''}">
                 <label for="">{{col.label}}：</label>
                 <a-input v-if="col.type === 'input'"  :placeholder="'请输入'+col.label" v-model="filter[col.prop]" :style="{width: col.width || defaultWidth}"></a-input>

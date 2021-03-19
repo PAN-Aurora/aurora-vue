@@ -39,6 +39,16 @@ export const appRouter = [
       { path: '/system/roleManage',iconType:'team', title: '角色管理',key: 'roleManage', component: (resolve) => require(['../views/system/roleManage.vue'], resolve)},
       { path: '/system/logManage', iconType:'file-search', title: '操作日志',key: 'logManage',component: (resolve) => require(['../views/system/logManage.vue'], resolve)},
     ]
+    },
+    {
+    path: '/dataBase',
+    iconType: 'setting',
+    title: '基础数据',
+    key: 'dataBase',
+    component: Main,
+    children: [
+      { path: '/modules/filelib/FileLibList',iconType:'user', title: '文件库管理', key: 'FileLibList',component: (resolve) => require(['../views/modules/filelib/FileLibList.vue'], resolve)},
+    ]
   },
 
 ];

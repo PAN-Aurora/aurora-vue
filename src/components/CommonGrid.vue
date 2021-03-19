@@ -258,9 +258,7 @@
                 this.loadData(filter);
             },
             tableChange(pagination) {
-                this.ipagination.current = pagination.current;
-                this.ipagination.pageSize = pagination.pageSize;
-                //this.ipagination.pageSizeOption = pagination.pageSizeOption;
+                 Object.assign(this.ipagination,pagination)
                  this.loadData(this.filter);
             },
             handleAdd() {
