@@ -42,12 +42,12 @@ export const appRouter = [
     },
     {
     path: '/dataBase',
-    iconType: 'setting',
+    iconType: 'database',
     title: '基础数据',
     key: 'dataBase',
     component: Main,
     children: [
-      { path: '/modules/filelib/FileLibList',iconType:'user', title: '文件库管理', key: 'FileLibList',component: (resolve) => require(['../views/modules/filelib/FileLibList.vue'], resolve)},
+       { path: '/modules/filelib/FileLibList',iconType:'user', title: '文件库管理', key: 'FileLibList',component: (resolve) => require(['../views/modules/filelib/file-lib-list.vue'], resolve)},
     ]
   },
 

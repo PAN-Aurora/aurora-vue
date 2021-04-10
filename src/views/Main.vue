@@ -20,7 +20,7 @@
                   <a-button @click="logout">登出</a-button>
                 </template>
                 <i class="fa fa-user-circle-o fa-2x" aria-hidden="true"></i>
-                <label for="" style="margin-left:10px;font-size:20px;">{{userName}}</label>
+                <label for="" style="margin-left:10px;font-size:16px;">{{userName}}</label>
               </a-popover>
             </div>
           </a-col>

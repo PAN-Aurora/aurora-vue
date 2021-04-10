@@ -42,6 +42,7 @@ export const listMixin = {
         }
     },
     methods: {
+        //针对查询条件过滤
         generateFilter (transFilter) {
             let filter = transFilter ? transFilter : this.gridOption.gridFilter
             filter.current = this.ipagination.current
@@ -51,6 +52,7 @@ export const listMixin = {
             }
             return filter
         },
+        //加载数据
         loadData (filter) {
             let url = this.gridOption.url ? this.gridOption.url.list : '/api/' + this.gridOption.modelName + '/list'
             this.loading = true
@@ -65,6 +67,7 @@ export const listMixin = {
                 }
             })
         },
+        //值过滤和格式化
         formatValues (values) {
             this.gridOption.columns.forEach((col) => {
                 if (col.type == 'switch') {
@@ -84,12 +87,12 @@ export const listMixin = {
             })
             return values
         },
+        //提交
         handleSubmit (e) {
             e.preventDefault();
             this.form.validateFields((err, values) => {
                 if (!err) {
                     let url = ''
-                    console.log(this.editItem)
                     if (this.editItem.id) {
                         values.id = this.editItem.id
                         url = this.gridOption.url ? this.gridOption.url.update : '/api/' + this.gridOption.modelName + '/update'
@@ -100,8 +103,6 @@ export const listMixin = {
                     if (this.gridOption.beforeSubmit) {
                         values = this.gridOption.beforeSubmit(values, this.editItem)
                     }
-                    console.log(values)
-
                     if(values) {
                         if(this.needFormData){
                             let formData  = new FormData();
@@ -132,6 +133,7 @@ export const listMixin = {
                 }
             });
         },
+        //删除
         handleDelete (ids) { // 调用删除接口
             let url = this.gridOption.url ? this.gridOption.url.delete :'/api/' + this.gridOption.modelName + '/delete'
             let trans = {};
@@ -151,7 +153,8 @@ export const listMixin = {
                 }
             })
         },
-        handleExport (ids) { // 导出并下载文档
+        // 导出并下载文档
+        handleExport (ids) {
             let url = this.gridOption.url ? this.gridOption.url.export :'/api/' + this.gridOption.modelName + '/export';
             let trans = {};
             trans[this.gridOption.exportKey] = ids;

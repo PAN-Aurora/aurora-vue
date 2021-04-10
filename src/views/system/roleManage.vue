@@ -233,7 +233,7 @@
                    columns: [
                          {       
                         title: '序号',      
-                        width: '5%', 
+                        width: '8%',
                         editFlag:false,
                         customRender: (text, record, index) => {
                                 return (index+1)

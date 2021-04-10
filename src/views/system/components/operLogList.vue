@@ -3,31 +3,19 @@
           <!--查询开始-->
         <a-card title="查询条件" hoverable size="default" style="margin-top:0.5em;margin-bottom:0.5em" >
             <a-row type="flex" justify="center" style="margin-bottom: 10px;">
-                <a-col :span="4">
+                <a-col :span="6">
                     <label class="dark_query_font">模块名称：</label>
                     <a-input placeholder="模块名称" v-model="filter.logModule" style="width: 50%"></a-input>
                 </a-col>
-                <a-col :span="4">
+                <a-col :span="6">
                     <label class="dark_query_font">登录用户：</label>
                     <a-input placeholder="登录用户" v-model="filter.logUser" style="width: 50%"></a-input>
                 </a-col>
-                <a-col :span="4" >
-                        <label class="dark_query_font">日志类型：</label>
-                        <a-select style="width:60%;" placeholder="日志类型"  
-                           v-model="filter.logType">
-                            <a-select-option value="1">操作日志</a-select-option>
-                            <a-select-option value="2">异常日志</a-select-option>
-                        </a-select>
-                </a-col>
-                <a-col :span="4">
+                <a-col :span="6">
                     <label class="dark_query_font">开始时间：</label>
                     <a-date-picker placeholder="操作开始时间" showTime v-model="filter.startTime" style="width:50%"></a-date-picker>
                 </a-col>
-                <a-col :span="4">
-                    <label class="dark_query_font">结束时间：</label>
-                    <a-date-picker placeholder="操作结束时间" showTime v-model="filter.endTime" style="width: 50%"></a-date-picker>
-                </a-col>
-                <a-col :span="4">
+                <a-col :span="6">
                     <a-button type="primary" icon="search" style="margin-right: 10px" size="default" @click="queryFromBtn" title="查询">查询</a-button>
                     <a-button type="primary" icon="sync" size="default" @click="resetFilter" title="重置">重置</a-button>
                 </a-col>            

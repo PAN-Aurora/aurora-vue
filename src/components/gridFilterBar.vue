@@ -1,5 +1,4 @@
 <template>
-
     <a-row type="flex" justify="space-around" align="middle">
         <div class="filterRow" v-if="renderOrNot('basic')||renderOrNot('cascader')">
             <section v-for="(col, idx) in filterColumns.basic" :key="idx" :style="{width:col.sectionWidth || ''}">
@@ -96,9 +95,8 @@
     </a-row>
 </template>
 <script>
-import { org_mixin } from '../maxin/org_mixin'
 export default {
-    mixins: [org_mixin],
+    mixins: [],
     props: ['filterColumns'],
     data () {
         return {
@@ -188,23 +186,23 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-.adva{
-    margin:0 1em;
-}
-.adrow{
-    margin-top: 1em;
-}
-.slide-fade-enter-active {
-  transition: all .2s ease;
-}
-.slide-fade-leave-active {
-  transition: all .2s cubic-bezier(1.0, 0.5, 0.8, 1.0);
-}
-.slide-fade-enter, .slide-fade-leave-to
-/* .slide-fade-leave-active for below version 2.1.8 */ {
-  transform: translateX(10px);
-  opacity: 0;
-}
+/*.adva{*/
+/*    margin:0 1em;*/
+/*}*/
+/*.adrow{*/
+/*    margin-top: 1em;*/
+/*}*/
+/*.slide-fade-enter-active {*/
+/*  transition: all .2s ease;*/
+/*}*/
+/*.slide-fade-leave-active {*/
+/*  transition: all .2s cubic-bezier(1.0, 0.5, 0.8, 1.0);*/
+/*}*/
+/*.slide-fade-enter, .slide-fade-leave-to*/
+/*!* .slide-fade-leave-active for below version 2.1.8 *! {*/
+/*  transform: translateX(10px);*/
+/*  opacity: 0;*/
+/*}*/
 .filterRow{
     display: flex;
     flex-wrap: wrap;
@@ -212,9 +210,9 @@ export default {
     margin-top:10px;
     margin-bottom:10px;
 }
-.filterRow label{
-    margin: 0;
-    color: rgb(192,200,232);
-}
+/*.filterRow label{*/
+/*    margin: 0;*/
+/*    color: rgb(192,200,232);*/
+/*}*/
 </style>
 

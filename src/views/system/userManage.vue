@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div style="margin:0 auto;">
         <!--模块路径开始-->
         <a-breadcrumb>
             <a-breadcrumb-item> <a-icon type="home" /></a-breadcrumb-item>
@@ -45,8 +45,31 @@
           <!--查询结束-->
 
        <!--列表开始-->
-       <a-row>
+        <a-card  hoverable size="default" style="margin-top:0.5em" >
+           <a-row style="margin:1em auto;" >
+               <a-button
+                       class="operateBtn"
+                       type="primary"
+                       icon="plus"
+                       :size="size"
+                       title="增加"
+                       v-hasPermission="'user_add'"
+                       @click="handleAdd"
+                       v-if="isRender('add')"
+               >新增</a-button>
+           <a-button
+                   class="operateBtn warning"
+                   icon="delete"
+                   @click="batchDelete"
+                   :size="size"
+                   title="删除选中条目"
+                   v-hasPermission="'user_delete'"
+                   v-if="isRender('deleteBatch')"
+           >删除</a-button>
+       </a-row>
+
         <a-table
+                bordered
                 :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"
                 @change="tableChange"
                 :dataSource="dataSource"
@@ -54,27 +77,27 @@
                 :pagination="ipagination"
                 :rowKey="(item, index) => { return index }"
           >
-           <template slot="title" slot-scope="text, record">
-               <a-button
-                    class="operateBtn"
-                    type="primary"
-                    icon="plus"
-                    :size="size"
-                    title="增加"
-                    v-hasPermission="'user_add'"
-                    @click="handleAdd"
-                    v-if="isRender('add')"
-                >新增</a-button>
-            <a-button
-                    class="operateBtn warning"
-                    icon="delete"
-                    @click="batchDelete"
-                    :size="size"
-                    title="删除选中条目"
-                    v-hasPermission="'user_delete'"
-                    v-if="isRender('deleteBatch')"
-                >删除</a-button>
-            </template>
+<!--           <template slot="title" slot-scope="text, record">-->
+<!--               <a-button-->
+<!--                    class="operateBtn"-->
+<!--                    type="primary"-->
+<!--                    icon="plus"-->
+<!--                    :size="size"-->
+<!--                    title="增加"-->
+<!--                    v-hasPermission="'user_add'"-->
+<!--                    @click="handleAdd"-->
+<!--                    v-if="isRender('add')"-->
+<!--                >新增</a-button>-->
+<!--            <a-button-->
+<!--                    class="operateBtn warning"-->
+<!--                    icon="delete"-->
+<!--                    @click="batchDelete"-->
+<!--                    :size="size"-->
+<!--                    title="删除选中条目"-->
+<!--                    v-hasPermission="'user_delete'"-->
+<!--                    v-if="isRender('deleteBatch')"-->
+<!--                >删除</a-button>-->
+<!--            </template>-->
             <template slot="operation" slot-scope="text, record">
                 <a-button
                         title="编辑"
@@ -91,8 +114,8 @@
                 </a-popconfirm>
             </template>
         </a-table>
-      </a-row>
       <!--列表结束-->
+        </a-card>
 
         <a-modal
                 :title="title"
@@ -237,8 +260,9 @@
                     columns: [
                           {       
                             title: '序号',      
-                            width: '5%', 
+                            width: '8%',
                             editFlag:false,
+                              align: 'center',
                             customRender: (text, record, index) => {
                                     return (index+1)
                             }
@@ -247,6 +271,7 @@
                             title: '用户名',
                             dataIndex: 'username',
                             type: 'input',
+                            align: 'center',
                             decorator: ['username'
                                 ,{ rules:
                                         [{
@@ -260,6 +285,7 @@
                             title: '密码',
                             dataIndex: 'password',
                             type: 'input',
+                             align: 'center',
                             colSpan:0,
                             placeholder:'不输入密码默认123456',
                             decorator: ['password'
@@ -274,12 +300,14 @@
                         title: '真实姓名',
                         dataIndex: 'realName',
                         type: 'input',
+                         align: 'center',
                         decorator: ['realName',{rules: [{ required: true, message: '真实姓名不能为空！' }]}]
                     }, 
                     {
                         title: '角色',
                         dataIndex: 'role',
                         type: 'select',
+                        align: 'center',
                         options: [],
                         decorator: ['role', {rules: [{ required: true, message: '角色不能为空！' }]}],
                         customRender: (role) => {
@@ -296,6 +324,7 @@
                         title: '性别',
                         dataIndex: 'sex',
                         type: 'select',
+                            align: 'center',
                         options: [
                             {
                             value:0,
@@ -317,6 +346,7 @@
                        {
                         title: '年龄',
                         dataIndex: 'age',
+                           align: 'center',
                         type: 'number',
                         decorator: ['age']
                      }
@@ -484,6 +514,7 @@
                     this.columns.push({
                         title: "操作",
                         dataIndex: "operation",
+                        align: 'center',
                         width: width,
                         scopedSlots: { customRender: "operation" }
                     });

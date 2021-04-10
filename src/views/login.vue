@@ -150,10 +150,10 @@ export default {
   
 
          this.state.loginBtn = true;
-         let res = await this.Request.post(this, "/api/auth/login", {
-          username: this.account,
-          password: this.password
-        }); 
+        let formData = new FormData();
+        formData.append("userName", this.account);
+        formData.append("passWord",this.password);
+         let res = await this.Request.post(this, "/api/auth/login",formData);
 
         let menuArray = [];
         if(res.user.menuList){
