@@ -12,13 +12,20 @@
         <a-card title="查询条件" hoverable size="default" style="margin-top:0.5em" >
             <a-col :span="24" v-if="true">
                 <a-row type="flex" justify="center" style="margin:0.5rem;">
-                    <a-col :span="5">
-                        <label>用户名：</label>
-                        <a-input v-model="filter.username" style="width: 60% ;" placeholder="请输入用户名"></a-input>
+                    <a-col :span="6">
+                        <label>文件名称：</label>
+                        <a-input v-model="filter.fileName" style="width: 60% ;" placeholder="请输入文件名称"></a-input>
                     </a-col>
-                    <a-col :span="5">
-                        <label>真实姓名：</label>
-                        <a-input v-model="filter.realName" style="width: 60% ;" placeholder="请输入真实姓名"></a-input>
+                    <a-col :span="6">
+                        <label>文件类别：</label>
+                        <a-select
+                                style="width: 60%"
+                                v-model="filter.fileType"
+                        >
+                            <a-select-option value="" >全部</a-select-option>
+                            <a-select-option value="国内" >国内</a-select-option>
+                            <a-select-option value="国外" >国外</a-select-option>
+                        </a-select>
                     </a-col>
                     <a-col :span="5">
                         <a-button
@@ -77,6 +84,9 @@
                     :pagination="ipagination"
                     :rowKey="(item, index) => { return index }"
             >
+                 <span slot="num" slot-scope="text, record, index">
+                    {{(ipagination.current-1)*ipagination.pageSize+parseInt(index)+1}}
+                 </span>
                 <template slot="operation" slot-scope="text, record">
                     <a-button
                             title="编辑"
@@ -103,7 +113,7 @@
                 :centered="true"
                 :maskClosable="false"
                 :closable="true"
-                 width="30%"
+                 width="40%"
                 :footer="null"
         >
             <file-lib-add :is-edit="isEdit"></file-lib-add>
@@ -139,6 +149,8 @@
                 roleList:[],
                 isEdit: false,
                 filter:{
+                    fileType:'',
+                    fileName:''
                 },
                 gridOption: {
                     beforeSubmitType:"post",
@@ -150,11 +162,9 @@
                     },
                     gridFilter:{
                     },
-                    moduleTitle: '用户管理',
-                    modelName: 'user',
                     beforeLoadType:"get",
                     url:{
-                        list:"/api/user/getUserList",
+                        list:"/api/filelib/getFileLibList",
                         create: '/api/user/saveUser',
                         update:"/api/user/updateUser",
                         delete:"/api/user/deleteUser",
@@ -163,94 +173,41 @@
                         {
                             title: '序号',
                             width: '8%',
-                            editFlag:false,
                             align: 'center',
-                            customRender: (text, record, index) => {
-                                return (index+1)
-                            }
+                            ellipsis: true,
+                            scopedSlots: {customRender: 'num'},
                         },
                         {
-                            title: '用户名',
-                            dataIndex: 'username',
-                            type: 'input',
+                            title: '文档编号',
+                            dataIndex: 'fileNo',
                             align: 'center',
-                            decorator: ['username'
-                                ,{ rules:
-                                        [{
-                                            required: true
-                                            , message: '用户名不能为空（由大小字母和数字组成）！'
-                                            , pattern:"^[0-9a-zA-Z_]{1,}$"
-                                        }]
-                                }]
                         },
                         {
-                            title: '密码',
-                            dataIndex: 'password',
-                            type: 'input',
+                            title: '文档名称',
+                            dataIndex: 'fileName',
+                            ellipsis: true,
                             align: 'center',
-                            colSpan:0,
-                            placeholder:'不输入密码默认123456',
-                            decorator: ['password'
-                                ,{ rules:
-                                        [{
-                                            required: false
-                                            , message: '密码不能为空！'
-                                        }]
-                                }]
                         },
                         {
-                            title: '真实姓名',
-                            dataIndex: 'realName',
-                            type: 'input',
+                            title: '文档类别',
+                            dataIndex: 'fileCategory',
                             align: 'center',
-                            decorator: ['realName',{rules: [{ required: true, message: '真实姓名不能为空！' }]}]
                         },
                         {
-                            title: '角色',
-                            dataIndex: 'role',
-                            type: 'select',
+                            title: '文档类型',
+                            dataIndex: 'fileType',
                             align: 'center',
-                            options: [],
-                            decorator: ['role', {rules: [{ required: true, message: '角色不能为空！' }]}],
-                            customRender: (role) => {
-                                if(role && role.name){
-                                    return role.name;
-                                }else{
-                                    return '';
-                                }
-
-                            }
-                        },
-
-                        {
-                            title: '性别',
-                            dataIndex: 'sex',
-                            type: 'select',
-                            align: 'center',
-                            options: [
-                                {
-                                    value:0,
-                                    label:'男'
-                                }, {
-                                    value:1,
-                                    label:'女'
-                                }
-                            ],
-                            decorator: ['sex'],
-                            customRender: (sex) => {
-                                if(sex === 0){
-                                    return '男';
-                                }else{
-                                    return '女';
-                                }
-                            }
                         },
                         {
-                            title: '年龄',
-                            dataIndex: 'age',
+                            title: '文档版本',
+                            dataIndex: 'fileVersion',
                             align: 'center',
-                            type: 'number',
-                            decorator: ['age']
+                        },
+                        {
+                            title: '文档描述',
+                            dataIndex: 'fileDesc',
+                            ellipsis: true,
+                            align: 'center',
                         }
                     ],
 
@@ -289,7 +246,7 @@
             handleAdd() {
                 this.form.resetFields();
                 this.$emit("resetForm");
-                this.title = "新增用户";
+                this.title = "新增文件";
                 this.visible = true;
                 this.editItem = {};
 
@@ -410,7 +367,7 @@
                 this.columns = _.filter(this.columns, col => {
                     return col.colSpan !== 0;
                 });
-                let width = 200;
+                let width = 100;
 
                 if (!(this.gridOption.showOperation === false)) {
                     this.columns.push({
