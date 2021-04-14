@@ -185,19 +185,25 @@
                 this.form.validateFields((err, values) => {
                     if (!err) {
                         console.info(values);
+                        if(values.files.fileList.length <1){
+                            this.$message.info('请选择文件上传!');
+                            return false;
+                        }
                         let formData = new FormData();
-                        formData.append("taskName", values.taskName);
-                        formData.append("departMentId",  this.departmentId);
-                        formData.append("startTime", moment(values.startTime).format('YYYY-MM-DD HH:mm:ss'));
-                        formData.append("endTime", moment(values.endTime).format('YYYY-MM-DD HH:mm:ss'));
+                        formData.append("fileNo", values.fileNo);
+                        formData.append("fileType", values.fileType);
+                        formData.append("fileVersion", values.fileVersion);
+                        formData.append("fileCategory", values.fileCategory);
+                        formData.append("fileDesc", values.fileDesc);
+                        formData.append("files", values.files.file);
 
                         POST(this ,this.urls.add, formData, (res) => {
-                            if(res.code == '1'){
-                                this.$message.info('任务创建成功');
+                            if(res.code == '200'){
+                                this.$message.info('保存成功');
                                 this.$parent.$parent.close();
                             }else{
                                 if(!res.message){
-                                    this.$message.error('任务创建失败');
+                                    this.$message.error('保存失败');
                                 }
                                 if(res.message){
                                     this.$message.error(res.message);

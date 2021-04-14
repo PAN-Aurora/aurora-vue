@@ -113,6 +113,7 @@
                 :centered="true"
                 :maskClosable="false"
                 :closable="true"
+                 :afterClose="searchResult"
                  width="40%"
                 :footer="null"
         >
@@ -165,9 +166,7 @@
                     beforeLoadType:"get",
                     url:{
                         list:"/api/filelib/getFileLibList",
-                        create: '/api/user/saveUser',
-                        update:"/api/user/updateUser",
-                        delete:"/api/user/deleteUser",
+                        delete:"/api/filelib/deleteFileLibById",
                     },
                     columns: [
                         {
@@ -295,7 +294,7 @@
                 } else {
                     let ids = [];
                     this.selectedRowKeys.forEach(num => {
-                        ids.push(this.dataSource[num].id);
+                        ids.push(this.dataSource[num].fileId);
                     });
                     this.handleDelete(ids);
                     this.selectedRowKeys=[];
@@ -309,7 +308,7 @@
                 return flag;
             },
             onDelete(record) {
-                this.handleDelete([record.id]);
+                this.handleDelete([record.fileId]);
                 this.selectedRowKeys=[];
             },
             onSelectChange(selectedRowKeys, rows) {

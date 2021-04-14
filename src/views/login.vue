@@ -209,7 +209,7 @@ export default {
   height: @full;
   justify-content: center;
   align-items: center;
-  background: url(../assets/login_bg.png) no-repeat;
+  background: url(../assets/login_bg.jpg) no-repeat;
   background-size: 100% 100%;
   background-size: cover;
 }

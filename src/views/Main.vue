@@ -9,19 +9,27 @@
             <h1>Ant Design of Vue</h1>
           </a-col>
           <a-col span="3">
+
             <div class="icons-list">
+              <i style="margin-top:8%"  class="fa fa-user-circle-o fa-2x" aria-hidden="true"></i>
+              <a-dropdown>
+                <a class="ant-dropdown-link" @click="e => e.preventDefault()">
+                  <label style="margin-left:10px;font-size:18px;">{{userName}}</label><a-icon type="down" />
+                </a>
+                <a-menu slot="overlay">
+                  <a-menu-item>
+                      <a href="javascript:;"><a-icon type="form" style="margin-right:4px;"/>修改密码</a>
+                  </a-menu-item>
+                  <a-menu-item>
+                     <a href="javascript:;" @click="logout"> <a-icon type="logout" style="margin-right:4px;" />退出登录</a>
+                  </a-menu-item>
+                </a-menu>
+              </a-dropdown>
               <!-- <a-badge :dot="showBadge">
                 <a-avatar icon="bell" style="background-color: #ffae00" />
               </a-badge> -->
               <!-- <a-icon type="bell" style="background-color: #ffae00;font-size=20px"/> -->
               <!-- <a-divider type="vertical" /> -->
-              <a-popover placement="bottomRight">
-                <template slot="content">
-                  <a-button @click="logout">登出</a-button>
-                </template>
-                <i class="fa fa-user-circle-o fa-2x" aria-hidden="true"></i>
-                <label for="" style="margin-left:10px;font-size:16px;">{{userName}}</label>
-              </a-popover>
             </div>
           </a-col>
         </a-row>
@@ -196,5 +204,15 @@ h1 {
   min-height: '280px';
   overflow-x: hidden;
   //min-height: 100%;
+}
+/deep/ a {
+  color: #ffffff;
+  text-decoration: none;
+  background-color: transparent;
+  outline: none;
+  cursor: pointer;
+  -webkit-transition: color 0.3s;
+  transition: color 0.3s;
+  -webkit-text-decoration-skip: objects;
 }
 </style>

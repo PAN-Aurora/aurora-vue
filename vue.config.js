@@ -68,7 +68,7 @@ module.exports = {
     // }, 
     proxy: { //代理地址 可配置多个
       '/api': {
-        target: 'http://127.0.0.1:8081',
+        target: 'http://127.0.0.1:8088',
         ws: false,
         changeOrigin: true,
         pathRewrite: {
