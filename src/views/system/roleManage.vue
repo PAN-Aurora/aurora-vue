@@ -39,6 +39,8 @@
         </a-card>
           <!--查询结束-->
     <a-row>
+        <a-card  hoverable size="default" style="margin-top:0.5em" >
+
         <a-table
                 :rowSelection="{selectedRowKeys: selectedRowKeys, onChange: onSelectChange}"
                 @change="tableChange"
@@ -86,6 +88,7 @@
             </template>
             
         </a-table>
+        </a-card>
      </a-row>
         <a-modal
                 :title="title"
@@ -133,13 +136,13 @@
                 <template >
                     <a-card title="权限配置" style="overflow-y: auto;max-height: 400px">
                         <a-tree
-                                 checkable
-                                 v-model="checkedKeys"
+                                checkable
+                                checkStrictly
+                                v-model="checkedKeys"
+                                :checkedKeys="checkedKeys"
                                 :treeData="treeData"
-                                :checkStrict="false"
                                 :replaceFields="replaceFields"
-                                @check="menuCheck"
-                                multiple
+
                         />
                     </a-card>
               </template>
@@ -197,6 +200,7 @@
                         this.checkedKeys =[];
                     },
                     beforeEdit: (item) => {
+                        this.checkedKeys= [];
                         let  rosourceList =  item.rosourceList;
                         if(item.rosourceList!=null && item.rosourceList.length>0){
                              rosourceList.forEach(item =>{
@@ -205,11 +209,13 @@
                         }else{
                             this.checkedKeys =[];
                         }
+                        console.info(this.checkedKeys);
                     },
                     beforeSubmit:(values,item)=>{
-                      if(this.allCheckedKeys.length>0){
+                        console.info(this.checkedKeys.checked);
+                      if(this.checkedKeys.checked.length>0){
                          let  rosourceList = [];
-                         this.allCheckedKeys.forEach(item =>{
+                         this.checkedKeys.checked.forEach(item =>{
                                 rosourceList.push({'id':item});
                           })
                          //权限

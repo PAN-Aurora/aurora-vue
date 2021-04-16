@@ -78,16 +78,16 @@
                           style="width: 95%"
                           v-decorator="['fileVersion', { rules: [{ required: true, message: '请填写文档版本' }] }]"
                           >
-                    <a-select-option value="1">版本1.0</a-select-option>
-                    <a-select-option value="2">版本2.0</a-select-option>
-                    <a-select-option value="3">版本3.0</a-select-option>
-                    <a-select-option value="4">版本4.0</a-select-option>
-                    <a-select-option value="5">版本5.0</a-select-option>
-                    <a-select-option value="6">版本6.0</a-select-option>
-                    <a-select-option value="7">版本7.0</a-select-option>
-                    <a-select-option value="8">版本8.0</a-select-option>
-                    <a-select-option value="9">版本9.0</a-select-option>
-                    <a-select-option value="10">版本10.0</a-select-option>
+                    <a-select-option :value="1">版本1.0</a-select-option>
+                    <a-select-option :value="2">版本2.0</a-select-option>
+                    <a-select-option :value="3">版本3.0</a-select-option>
+                    <a-select-option :value="4">版本4.0</a-select-option>
+                    <a-select-option :value="5">版本5.0</a-select-option>
+                    <a-select-option :value="6">版本6.0</a-select-option>
+                    <a-select-option :value="7">版本7.0</a-select-option>
+                    <a-select-option :value="8">版本8.0</a-select-option>
+                    <a-select-option :value="9">版本9.0</a-select-option>
+                    <a-select-option :value="10">版本10.0</a-select-option>
 
                 </a-select>
             </a-form-item>
@@ -130,6 +130,10 @@
             isEdit: {
                 type: Boolean,
                 default:false,
+            },
+            editItem:{
+                 type: Object,
+                 required: false,
             }
         },
         data() {
@@ -159,10 +163,17 @@
         components: {
         },
         mounted() {
-            this.fileNo = 'WD-'+Date.now();
-            this.form.setFieldsValue({
-                 fileNo:this.fileNo
-            })
+            this.form.resetFields();
+            if(!this.isEdit){
+                this.fileNo = 'WD-'+Date.now();
+                this.form.setFieldsValue({
+                    fileNo:this.fileNo
+                })
+            }else{//修改
+                console.info(this.editItem);
+                this.edit();
+            }
+
         },
         methods: {
             handleRemove(file) {
@@ -214,8 +225,34 @@
                     }
                 });
             },
+            //关闭窗口
             closeModal(){
+                console.info(11);
                 this.$parent.$parent.close();
+            },
+            //编辑
+           edit() {
+                this.title = "编辑用户";
+                let clone = _.cloneDeep( this.editItem);
+
+                this.$nextTick(() => {
+                    // carrynie 去除多余属性
+                    let obj = this.form.getFieldsValue();
+                    for(let key in obj){
+                        if(clone.hasOwnProperty(key)){
+                            obj[key] = clone[key]
+                        }
+                    }
+                    this.fileList = [{
+                        uid: clone.fileNo,
+                        name: clone.fileName,
+                        status: 'done',
+                        url: clone.filePath,
+                       }]
+                    console.info(this.fileList);
+                    // carrynie 去除多余属性
+                    this.form.setFieldsValue(obj);
+                });
             },
         },
 

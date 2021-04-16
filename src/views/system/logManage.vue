@@ -6,6 +6,7 @@
             <a-breadcrumb-item><a href="javascript:void(0);">系统管理</a></a-breadcrumb-item>
             <a-breadcrumb-item><a href="javascript:void(0);" >日志管理</a></a-breadcrumb-item>
         </a-breadcrumb>
+
         <!--模块路径结束-->
         <oper-log-list :columns="operLogColumns" :queryType="'operLog'" :url="urls.operUrl" :tableRowKey="'logId'"></oper-log-list>
     </div>

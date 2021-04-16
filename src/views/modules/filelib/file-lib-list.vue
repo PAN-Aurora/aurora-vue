@@ -34,6 +34,7 @@
                                 :size="size"
                                 title="搜索"
                                 icon="search"
+
                                 @click="searchResult"
                         >查询</a-button>
                         <a-button
@@ -60,7 +61,7 @@
                         icon="plus"
                         :size="size"
                         title="增加"
-                        v-hasPermission="'user_add'"
+                        v-hasPermission="'file_add'"
                         @click="handleAdd"
                         v-if="isRender('add')"
                 >新增</a-button>
@@ -70,7 +71,7 @@
                         @click="batchDelete"
                         :size="size"
                         title="删除选中条目"
-                        v-hasPermission="'user_delete'"
+                        v-hasPermission="'file_delete'"
                         v-if="isRender('deleteBatch')"
                 >删除</a-button>
             </a-row>
@@ -94,12 +95,14 @@
                             @click="handleEdit(record)"
                             icon="edit"
                             shape="circle"
-                            v-hasPermission="'user_update'"
+                            v-hasPermission="'file_update'"
                             size="small"
                             v-if="isRender('edit')"
                     ></a-button>
                     <a-popconfirm v-if="isRender('delete')" title="确认删除?" @confirm="() => onDelete(record)">
-                        <a-button class="operateBtn warning" type="primary"  shape="circle" icon="delete" size="small" title="删除"></a-button>
+                        <a-button class="operateBtn warning" type="primary"
+                                  v-hasPermission="'file_delete'"
+                                  shape="circle" icon="delete" size="small" title="删除"></a-button>
                     </a-popconfirm>
                 </template>
             </a-table>
@@ -116,8 +119,9 @@
                  :afterClose="searchResult"
                  width="40%"
                 :footer="null"
+                :destroyOnClose="true"
         >
-            <file-lib-add :is-edit="isEdit"></file-lib-add>
+            <file-lib-add :is-edit="isEdit" :editItem="editItem"></file-lib-add>
         </a-modal>
 
     </div>
@@ -247,6 +251,7 @@
                 this.$emit("resetForm");
                 this.title = "新增文件";
                 this.visible = true;
+                this.isEdit = false;
                 this.editItem = {};
 
                 this.$nextTick(() => {
@@ -258,35 +263,12 @@
             },
             //编辑
             handleEdit(record) {
-                this.editItem = record;
+                console.info(record);
                 this.title = "编辑用户";
+                this.isEdit = true;
+                this.editItem = record;
                 this.visible = true;
-                let clone = _.cloneDeep(record);
-                this.gridOption.columns.forEach(col => {
-                    if (["datetimePicker", "datePicker"].indexOf(col.type) > -1) {
-                        clone[col.dataIndex] = clone[col.dataIndex]
-                            ? moment(new Date(clone[col.dataIndex]))
-                            : null;
-                    }
-                });
-                this.$nextTick(() => {
-                    if (this.gridOption.beforeEdit) {
-                        this.gridOption.beforeEdit(clone);
-                    }
-                    // carrynie 去除多余属性
-                    let obj = this.form.getFieldsValue();
-                    for(let key in obj){
-                        if(clone.hasOwnProperty(key)){
-                            obj[key] = clone[key]
-                        }
-                    }
-                    obj.password ='';
-                    obj.role = obj.role.id;
 
-                    // carrynie 去除多余属性
-                    this.form.setFieldsValue(obj);
-                    this.disabled = true;
-                });
             },
             batchDelete() {
                 if (this.selectedRowKeys.length === 0) {

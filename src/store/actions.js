@@ -13,6 +13,7 @@ export const getBaseData = ({commit, state}) => {
                     name: item.title,
                 }
             })
+              console.info(formatArray);
             commit('updateMenuListData', formatArray)
         })
 

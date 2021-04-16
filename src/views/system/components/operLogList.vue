@@ -22,6 +22,7 @@
             </a-row>
         </a-card>
           <!--查询结束-->
+         <a-card  hoverable size="default" style="margin-top:0.5em" >
 
         <a-row type="flex" justify="space-around">
             <a-col :span="24">
@@ -40,6 +41,7 @@
                   </a-table>
             </a-col>
         </a-row>
+         </a-card>
     </div>
 </template>
 
