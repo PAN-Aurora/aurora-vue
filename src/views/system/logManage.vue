@@ -12,7 +12,7 @@
     </div>
 </template>
 <script>
-    import operLogList from './components/operLogList'
+    import operLogList from './components/oper-log-list'
     export default {
         components: {
             operLogList
